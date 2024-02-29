@@ -1,7 +1,7 @@
 {
   "name": "@dumi/prisma",
   "main": "./index.ts",
-  "types": "./index.d.ts",
+  "types": "./index.ts",
   "version": "0.0.0",
   "private": true,
   "scripts": {
