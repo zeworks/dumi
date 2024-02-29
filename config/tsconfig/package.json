@@ -1,0 +1,11 @@
+{
+  "name": "@dumi/tsconfig",
+  "version": "0.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "files": [
+    "nextjs.json",
+    "lib.json"
+  ]
+}
