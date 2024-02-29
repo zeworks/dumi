@@ -1,0 +1,22 @@
+{
+  "name": "@dumi/prisma",
+  "main": "./index.ts",
+  "types": "./index.d.ts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "db:migrate": "pnpm env:load prisma migrate dev",
+    "db:generate": "pnpm env:load prisma generate",
+    "db:studio": "pnpm env:load prisma studio",
+    "env:load": "dotenv -e ../../.env --"
+  },
+  "devDependencies": {
+    "@dumi/tsconfig": "workspace:*",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "@prisma/client": "5.8.1",
+    "dotenv-cli": "^7.3.0",
+    "prisma": "^5.8.1"
+  }
+}
