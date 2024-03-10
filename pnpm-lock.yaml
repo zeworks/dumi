@@ -15,7 +15,7 @@ importers:
         specifier: ^5.3.3
         version: 5.4.2
 
-  apps/api:
+  apps/server:
     devDependencies:
       '@dumi/crypto':
         specifier: workspace:*
