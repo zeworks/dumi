@@ -1,0 +1,17 @@
+{
+  "name": "@dumi/zod",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@dumi/tsconfig": "workspace:*"
+  },
+  "dependencies": {
+    "zod": "^3.22.4"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@dumi/server",
+  "version": "1.0.0",
+  "main": "./dist/server.ts",
+  "types": "./dist/server.d.ts",
+  "files": [
+    "./dist"
+  ],
+  "scripts": {
+    "dev": "nodemon --files -w src src/server.ts",
+    "test": "jest"
+  },
+  "devDependencies": {
+    "@dumi/crypto": "workspace:*",
+    "@dumi/env": "workspace:*",
+    "@dumi/prisma": "workspace:*",
+    "@dumi/tsconfig": "workspace:*",
+    "@dumi/zod": "workspace:*",
+    "@jest/globals": "^29.7.0",
+    "@types/node": "^20.11.24",
+    "fastify": "^4.26.2",
+    "jest": "^29.7.0",
+    "nodemon": "^3.1.0",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3",
+    "zod": "^3.22.4"
+  }
+}

@@ -19,6 +19,7 @@
         "!.next/cache/**"
       ]
     },
+    "test": {},
     "db:generate": {},
     "db:migrate": {},
     "db:studio": {},

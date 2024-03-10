@@ -1,0 +1,22 @@
+{
+  "name": "@dumi/crypto",
+  "version": "1.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "private": true,
+  "scripts": {
+    "dev": "tsc -w",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@dumi/env": "workspace:*",
+    "@dumi/tsconfig": "workspace:*",
+    "@types/bcrypt": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.5",
+    "typescript": "^5.3.3"
+  }
+}
