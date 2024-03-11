@@ -5,6 +5,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "dev": "tsc -w",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio"

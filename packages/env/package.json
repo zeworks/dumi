@@ -12,5 +12,8 @@
   "devDependencies": {
     "@dumi/tsconfig": "workspace:*",
     "@types/node": "^20.11.24"
+  },
+  "scripts": {
+    "dev": "tsc -w"
   }
 }
