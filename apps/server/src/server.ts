@@ -5,7 +5,7 @@ import userModuleRoutes from "./modules/user/routes"
 
 setupRoutes(app)([userModuleRoutes]).listen(
 	{
-		port: Number(env.PORT),
+		port: Number(env.SERVER_PORT),
 	},
 	() => console.log("🚀 Server is up and running!")
 )

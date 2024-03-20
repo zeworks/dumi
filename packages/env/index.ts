@@ -2,7 +2,8 @@ import { z } from "zod"
 
 export const envSchema = z.object({
 	MODE: z.enum(["development", "production", "test"]).default("development"),
-	PORT: z.string(),
+	SERVER_PORT: z.string(),
+	WEB_PORT: z.string(),
 	JWT_SECRET: z.string(),
 	DATABASE_URL: z.string(),
 })
