@@ -15,7 +15,7 @@ const validateServiceResponse = (response?: User | null) => {
 	return ok(response)
 }
 
-export const createAuthCredentialsController =
+export const userCreateAuthCredentialsController =
 	(
 		service: CreateAuthServiceInput
 	): Controller<CreateAuthCredentialsContract, User> =>

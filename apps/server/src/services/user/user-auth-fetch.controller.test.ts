@@ -1,10 +1,10 @@
 import { describe, expect, test } from "@jest/globals"
-import { UserRepositoryMemory } from "./repository.memory"
+import UserRepositoryMemory from "./repository.memory"
 import { userCreateService } from "./user-create.service"
 import { userFetchIdService } from "./user-fetch-id.service"
-import { createAuthCredentialsController } from "./user-auth-create-credentials.controller"
-import { createAuthCredentials } from "./user-auth-create-credentials.service"
-import { userAuthenticationFetchController } from "./user-auth-fetch.controller"
+import { userCreateAuthCredentialsService } from "./user-auth-create-credentials.service"
+import { userCreateAuthCredentialsController } from "./user-auth-create-credentials.controller"
+import { userAuthFetchController } from "./user-auth-fetch.controller"
 
 describe("user auth fetch controller", () => {
 	test("should fetch user auth with success", async () => {
@@ -19,18 +19,20 @@ describe("user auth fetch controller", () => {
 
 		if (user?.id) {
 			// create session to the user
-			const sessionService = createAuthCredentials(repository)
-			const session = await createAuthCredentialsController(sessionService)({
-				body: {
-					email: user.email,
-					password: "123",
-				},
-			} as any)
+			const sessionService = userCreateAuthCredentialsService(repository)
+			const session = await userCreateAuthCredentialsController(sessionService)(
+				{
+					body: {
+						email: user.email,
+						password: "123",
+					},
+				} as any
+			)
 
 			if (session.type === "success") {
-				const userAuthFetchService = userFetchIdService(repository)
-				const userAuthFetchController = await userAuthenticationFetchController(
-					userAuthFetchService
+				const authFetchService = userFetchIdService(repository)
+				const authFetchController = await userAuthFetchController(
+					authFetchService
 				)({
 					_context: {
 						...user,
@@ -38,11 +40,11 @@ describe("user auth fetch controller", () => {
 					},
 				} as any)
 
-				if (userAuthFetchController.type === "success") {
-					expect(userAuthFetchController.data.first_name).toEqual(
+				if (authFetchController.type === "success") {
+					expect(authFetchController.data.first_name).toEqual(
 						session.data.first_name
 					)
-					expect(userAuthFetchController.data.access_token).toEqual(
+					expect(authFetchController.data.access_token).toEqual(
 						session.data.access_token
 					)
 				}

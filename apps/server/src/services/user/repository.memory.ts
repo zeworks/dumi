@@ -6,9 +6,9 @@ import {
 	UserFetchEmailRepository,
 	UserFetchIdRepository,
 	UserRepository,
-} from "./repository"
+} from "./repositories"
 
-export class UserRepositoryMemory implements UserRepository {
+class UserRepositoryMemory implements UserRepository {
 	private users: User[]
 
 	constructor() {
@@ -43,3 +43,5 @@ export class UserRepositoryMemory implements UserRepository {
 		return Promise.resolve(user)
 	}
 }
+
+export default UserRepositoryMemory

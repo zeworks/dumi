@@ -1,8 +1,8 @@
 import { jwtSign } from "@dumi/crypto"
 import { decrypt } from "@dumi/crypto/encryption"
-import { UserRepository } from "./repository"
+import { UserRepository } from "./repositories"
 
-export const createAuthCredentials =
+export const userCreateAuthCredentialsService =
 	(repository: UserRepository) => async (email: string, password: string) => {
 		const user = await repository.fetchEmail(email)
 

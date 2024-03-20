@@ -1,5 +1,5 @@
 import { encrypt } from "@dumi/crypto/encryption"
-import { UserCreateRepository, UserRepository } from "./repository"
+import { UserCreateRepository, UserRepository } from "./repositories"
 
 export type UserCreateService = UserCreateRepository
 

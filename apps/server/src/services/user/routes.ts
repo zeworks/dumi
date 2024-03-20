@@ -1,37 +1,41 @@
 import { authMiddleware } from "../../engine/middlewares"
 import { controllerRequestAdapter } from "../../engine/adapters"
 import { AppInstance } from "../../engine/app"
-import { makeUserCreateController } from "./user-create.controller-factory"
-import { makeCreateAuthCredentialsController } from "./user-auth-create-credentials.controller-factory"
-import { makeUserFetchAllController } from "./user-fetch-all.controller-factory"
-import { makeUserAuthenticationFetchController } from "./user-auth-fetch.controller-factory"
+import {
+	userAuthCreateCredentialsControllerFactory,
+	userAuthFetchControllerFactory,
+	userCreateControllerFactory,
+	userFetchAllControllerFactory,
+} from "./factories"
 
 export default (app: AppInstance) => {
 	app.route({
 		url: "/users",
 		method: "POST",
 		preHandler: [authMiddleware],
-		handler: controllerRequestAdapter(makeUserCreateController()),
+		handler: controllerRequestAdapter(userCreateControllerFactory()),
 	})
 
 	app.route({
 		url: "/users",
 		method: "GET",
 		preHandler: [authMiddleware],
-		handler: controllerRequestAdapter(makeUserFetchAllController()),
+		handler: controllerRequestAdapter(userFetchAllControllerFactory()),
 	})
 
 	app.route({
 		url: "/session",
 		method: "POST",
-		handler: controllerRequestAdapter(makeCreateAuthCredentialsController()),
+		handler: controllerRequestAdapter(
+			userAuthCreateCredentialsControllerFactory()
+		),
 	})
 
 	app.route({
 		url: "/session",
 		method: "GET",
 		preHandler: [authMiddleware],
-		handler: controllerRequestAdapter(makeUserAuthenticationFetchController()),
+		handler: controllerRequestAdapter(userAuthFetchControllerFactory()),
 	})
 
 	return app
