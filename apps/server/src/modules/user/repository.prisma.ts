@@ -1,7 +1,7 @@
-import db from "@dumi/prisma/index"
-import { UserRepository } from "./repository"
+import db from "../../engine/database"
+import { UserRepository } from "./repositories"
 
-export const userRepository: UserRepository = {
+const userPrismaRepository: UserRepository = {
 	create: async (data) => {
 		const user = await db.user.create({
 			data: {
@@ -30,3 +30,5 @@ export const userRepository: UserRepository = {
 
 	fetchId: (id) => db.user.findUnique({ where: { id } }),
 }
+
+export default userPrismaRepository

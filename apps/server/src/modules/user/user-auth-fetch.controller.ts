@@ -3,7 +3,7 @@ import { UserFetchIdService } from "./user-fetch-id.service"
 import { ok, serverError, unauthorized } from "../../helpers/http"
 import { User } from "@dumi/zod/schemas/user"
 
-export const userAuthenticationFetchController =
+export const userAuthFetchController =
 	(service: UserFetchIdService): Controller<any, User> =>
 	async (request) => {
 		if (!request?._context?.id) return unauthorized()

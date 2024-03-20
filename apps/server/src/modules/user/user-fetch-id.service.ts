@@ -1,4 +1,4 @@
-import { UserFetchIdRepository, UserRepository } from "./repository"
+import { UserFetchIdRepository, UserRepository } from "./repositories"
 
 export type UserFetchIdService = UserFetchIdRepository
 

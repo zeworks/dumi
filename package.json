@@ -9,10 +9,9 @@
     "db:migrate": "dotenv -- turbo run db:migrate",
     "db:studio": "dotenv -- turbo run db:studio"
   },
-  "dependencies": {
-    "typescript": "^5.3.3"
-  },
   "devDependencies": {
-    "dotenv-cli": "^7.4.1"
+    "dotenv-cli": "^7.4.1",
+    "turbo": "^1.12.5",
+    "typescript": "^5.3.3"
   }
 }
