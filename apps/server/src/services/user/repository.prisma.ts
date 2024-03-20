@@ -1,4 +1,4 @@
-import db from "@dumi/prisma"
+import db from "../../engine/database"
 import { UserRepository } from "./repository"
 
 export const userRepository: UserRepository = {
