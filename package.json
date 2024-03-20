@@ -1,17 +1,18 @@
 {
   "private": true,
   "scripts": {
-    "dev": "npm run env:load turbo run dev --parallel --",
-    "build": "npm run env:load turbo run build --",
+    "dev": "dotenv -- turbo run dev --parallel --",
+    "build": "dotenv -- turbo run build --",
     "lint": "turbo run lint --",
-    "test": "npm run env:load turbo run test --parallel --",
-    "db:generate": "npm run env:load turbo run db:generate",
-    "db:migrate": "npm run env:load turbo run db:migrate",
-    "db:studio": "npm run env:load turbo run db:studio",
-    "env:load": "dotenv -e .env --"
+    "test": "dotenv -- turbo run test --parallel --",
+    "db:generate": "dotenv -- turbo run db:generate",
+    "db:migrate": "dotenv -- turbo run db:migrate",
+    "db:studio": "dotenv -- turbo run db:studio"
   },
   "dependencies": {
-    "dotenv-cli": "^7.3.0",
     "typescript": "^5.3.3"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^7.4.1"
   }
 }

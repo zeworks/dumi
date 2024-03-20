@@ -1,5 +1,4 @@
 import { z } from "zod"
-import "dotenv/config"
 
 export const envSchema = z.object({
 	MODE: z.enum(["development", "production", "test"]).default("development"),
