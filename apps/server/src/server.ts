@@ -7,5 +7,5 @@ setupRoutes(app)([userModuleRoutes]).listen(
 	{
 		port: Number(env.SERVER_PORT),
 	},
-	() => console.log("🚀 Server is up and running!")
+	() => console.log(`🚀 Server is up and running on ${env.SERVER_PORT}!`)
 )
