@@ -6,9 +6,11 @@ import {
 	userAuthFetchControllerFactory,
 	userCreateControllerFactory,
 	userFetchAllControllerFactory,
+	userFetchIdControllerFactory,
 } from "./factories"
 
 export default (app: AppInstance) => {
+	// create user
 	app.route({
 		url: "/users",
 		method: "POST",
@@ -16,6 +18,7 @@ export default (app: AppInstance) => {
 		handler: controllerRequestAdapter(userCreateControllerFactory()),
 	})
 
+	// fetch all the users
 	app.route({
 		url: "/users",
 		method: "GET",
@@ -23,6 +26,15 @@ export default (app: AppInstance) => {
 		handler: controllerRequestAdapter(userFetchAllControllerFactory()),
 	})
 
+	// fetch user by id
+	app.route({
+		url: "/users/:id",
+		method: "GET",
+		preHandler: [authMiddleware],
+		handler: controllerRequestAdapter(userFetchIdControllerFactory()),
+	})
+
+	// create session
 	app.route({
 		url: "/session",
 		method: "POST",
@@ -31,6 +43,7 @@ export default (app: AppInstance) => {
 		),
 	})
 
+	// fetch session
 	app.route({
 		url: "/session",
 		method: "GET",
