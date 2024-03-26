@@ -3,45 +3,46 @@ import {
 	HttpErrorResponse,
 	HttpSuccessResponse,
 } from "../engine/protocols"
+import { Status } from "../engine/status"
 
 export const ok = (data: any): HttpSuccessResponse => ({
 	type: "success",
-	status: 200,
+	status: Status.Ok,
 	data,
 })
 
 export const serverError = (error: any): HttpErrorResponse => ({
 	type: "error",
-	status: 500,
+	status: Status.ServerError,
 	error,
 })
 
 export const badRequest = (error: Error): HttpErrorResponse => ({
 	type: "error",
-	status: 400,
+	status: Status.BadRequest,
 	error,
 })
 
 export const noContent = (): HttpSuccessResponse => ({
 	type: "success",
-	status: 204,
+	status: Status.NoContent,
 	data: null,
 })
 
 export const notFound = (error: Error): HttpErrorResponse => ({
 	type: "error",
-	status: 404,
+	status: Status.NotFound,
 	error,
 })
 
 export const conflict = (error: Error): HttpErrorResponse => ({
 	error,
-	status: 409,
+	status: Status.Conflict,
 	type: "error",
 })
 
 export const unauthorized = (): HttpErrorResponse => ({
-	status: 401,
+	status: Status.Unauthorized,
 	error: {
 		message: "Unauthorized",
 		detail: "Not authorized access",

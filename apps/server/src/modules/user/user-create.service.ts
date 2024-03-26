@@ -10,7 +10,7 @@ export const userCreateService =
 		const user = await repository.fetchEmail(input.email)
 		if (!!user) return null
 
-		const password = input.password ? await encrypt(input.password) : ""
+		const password = input.password ? await encrypt(input.password) : null
 
 		const response = await repository.create({
 			...input,

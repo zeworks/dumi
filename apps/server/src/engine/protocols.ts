@@ -1,8 +1,8 @@
 import { FastifyRequest } from "fastify"
 
 //#region protocol::controller
-export type Controller<T = any, R = any> = (
-	request?: FastifyRequest<{ Body: T }>
+export type Controller<T = any, R = any, P = any> = (
+	request?: Partial<FastifyRequest<{ Body: T; Params: P }>>
 ) => Promise<HttpResponse<R>>
 //#endregion
 
