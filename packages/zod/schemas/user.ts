@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { baseSchema } from "./base"
+import { BASE_SCHEMA } from "./base"
 
 export const STATUS_SCHEMA = z.enum([
 	"ACTIVE",
@@ -8,7 +8,7 @@ export const STATUS_SCHEMA = z.enum([
 	"BLOCKED",
 ])
 
-export const USER_SCHEMA = baseSchema.merge(
+export const USER_SCHEMA = BASE_SCHEMA.merge(
 	z.object({
 		id: z.string().uuid(),
 		first_name: z
