@@ -14,6 +14,14 @@ enum UserStatus {
   BLOCKED
 }
 
+model Organization {
+  id         String    @id @default(cuid())
+  users      User[]
+  owner      Boolean
+  created_at DateTime? @default(now())
+  updated_at DateTime? @default(now())
+}
+
 model User {
   id         String     @id @default(cuid())
   first_name String
@@ -24,4 +32,8 @@ model User {
   avatar     String?
   created_at DateTime?  @default(now())
   updated_at DateTime?  @default(now())
+
+  // relations
+  Organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
 }
