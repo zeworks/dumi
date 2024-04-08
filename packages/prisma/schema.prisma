@@ -17,7 +17,7 @@ enum UserStatus {
 model Organization {
   id         String    @id @default(cuid())
   users      User[]
-  owner      Boolean
+  owner      Boolean   @default(false)
   created_at DateTime? @default(now())
   updated_at DateTime? @default(now())
 }
