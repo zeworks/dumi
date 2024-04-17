@@ -7,17 +7,23 @@ import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
 import { ComponentProps } from "react"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 type AuthenticationFormProps = ComponentProps<"div">
 
 export function LoginForm({ className, ...props }: AuthenticationFormProps) {
+	const router = useRouter()
+
 	const [isLoading, setIsLoading] = useState(false)
 
+	// TODO: add authentication service
 	async function onSubmit(event: React.SyntheticEvent) {
 		event.preventDefault()
 		setIsLoading(true)
 
 		setTimeout(() => {
+			// redirect to the dashboard page
+			router.push("/dashboard")
 			setIsLoading(false)
 		}, 3000)
 	}
