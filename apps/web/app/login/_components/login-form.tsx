@@ -43,6 +43,7 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 							autoCapitalize="none"
 							autoComplete="email"
 							autoCorrect="off"
+							required
 							disabled={isLoading}
 						/>
 					</div>
