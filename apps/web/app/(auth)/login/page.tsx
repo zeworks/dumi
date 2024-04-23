@@ -6,16 +6,22 @@ import { LoginForm } from "./_components/login-form"
 export default function Login() {
 	return (
 		<main className="relative h-[100vh]">
-			<div className="absolute text-black dark:text-white lg:hidden flex items-center text-lg font-bold top-8 left-8">
-				<Icons.logoSmall className="mr-2 h-6 w-6 fill-black dark:fill-white" />
+			<Link
+				href="/"
+				className="absolute text-black dark:text-white lg:hidden inline-flex items-center text-lg font-bold top-8 left-8"
+			>
+				<Icons.logoSmall className="mr-2 h-4 w-4 fill-black dark:fill-white" />
 				Dumi
-			</div>
+			</Link>
 			<div className="container flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0 h-[100%]">
 				<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-					<div className="relative text-black dark:text-white z-20 flex items-center text-lg font-bold">
-						<Icons.logoSmall className="mr-2 h-6 w-6 fill-black dark:fill-white" />
+					<Link
+						href="/"
+						className="relative text-black dark:text-white z-20 inline-flex items-center text-lg font-bold"
+					>
+						<Icons.logoSmall className="mr-2 h-4 w-4 fill-black dark:fill-white" />
 						Dumi
-					</div>
+					</Link>
 					<div className="relative z-20 mt-auto">
 						<blockquote className="space-y-2 text-black dark:text-white">
 							<p className="text-lg">
