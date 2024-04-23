@@ -9,7 +9,11 @@ export const userAuthFetchController =
 		if (!request?._context?.id) return unauthorized()
 
 		try {
-			const user = await service(request._context.id)
+			const user = await service({
+				id: request._context.id,
+			})
+
+			delete user?.password
 
 			return ok({
 				...user,
