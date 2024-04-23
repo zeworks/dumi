@@ -8,10 +8,14 @@
     "dev": "tsc -w",
     "db:migrate": "prisma migrate dev",
     "db:generate": "prisma generate",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:seed": "ts-node seed.ts"
   },
   "devDependencies": {
+    "@dumi/env": "workspace:*",
     "@dumi/tsconfig": "workspace:*",
+    "@types/node": "^20.12.7",
+    "ts-node": "^10.9.2",
     "typescript": "^5.3.3"
   },
   "dependencies": {

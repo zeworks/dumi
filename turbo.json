@@ -33,9 +33,30 @@
         ".env"
       ]
     },
-    "db:generate": {},
-    "db:migrate": {},
-    "db:studio": {},
+    "db:generate": {
+      "dotEnv": [
+        ".env.test.local",
+        ".env.test",
+        ".env.local",
+        ".env"
+      ]
+    },
+    "db:migrate": {
+      "dotEnv": [
+        ".env.test.local",
+        ".env.test",
+        ".env.local",
+        ".env"
+      ]
+    },
+    "db:studio": {
+      "dotEnv": [
+        ".env.test.local",
+        ".env.test",
+        ".env.local",
+        ".env"
+      ]
+    },
     "dev": {
       "dotEnv": [
         ".env.development.local",
