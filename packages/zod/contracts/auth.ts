@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { User } from "../schemas/user"
+import { User } from "../schemas"
 
 export const CREATE_AUTH_CREDENTIALS_CONTRACT = z.object({
 	email: z.string(),

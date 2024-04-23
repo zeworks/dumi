@@ -2,7 +2,7 @@ import { preHandlerHookHandler } from "fastify"
 import { HttpErrorResponse } from "./protocols"
 import { unauthorized } from "../helpers/http"
 import { verify } from "@dumi/crypto/jwt"
-import { User } from "@dumi/zod/schemas/user"
+import { User } from "@dumi/zod/schemas"
 
 export const authMiddleware: preHandlerHookHandler = (request, reply, done) => {
 	if (!request.headers.authorization)

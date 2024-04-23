@@ -1,5 +1,5 @@
 import { encrypt } from "@dumi/crypto/encryption"
-import { User } from "@dumi/zod/schemas/user"
+import { User } from "@dumi/zod/schemas"
 import {
 	UserCreateRepository,
 	UserFetchAllRespository,
@@ -28,14 +28,14 @@ class UserRepositoryMemory implements UserRepository {
 		return Promise.resolve(user)
 	}
 
-	fetchEmail: UserFetchEmailRepository = async (email) => {
+	fetchEmail: UserFetchEmailRepository = async ({ email }) => {
 		const user = this.users?.find((u) => u.email === email)
 		return user || null
 	}
 
 	fetchAll: UserFetchAllRespository = () => Promise.resolve(this.users || [])
 
-	fetchId: UserFetchIdRepository = (id) => {
+	fetchId: UserFetchIdRepository = ({ id }) => {
 		const user = this.users.find((u) => u.id === id)
 
 		if (!user) return Promise.reject("user not found")

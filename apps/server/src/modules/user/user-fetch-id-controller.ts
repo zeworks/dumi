@@ -21,7 +21,9 @@ export const userFetchIdController =
 		if (validation.type === "error") return badRequest(validation.error)
 
 		try {
-			const user = await fetchIdService(request?.params?.id!)
+			const user = await fetchIdService({
+				id: request?.params?.id!,
+			})
 
 			if (!user)
 				return notFound({

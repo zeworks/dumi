@@ -4,7 +4,7 @@ import { UserRepository } from "./repositories"
 
 export const userCreateAuthCredentialsService =
 	(repository: UserRepository) => async (email: string, password: string) => {
-		const user = await repository.fetchEmail(email)
+		const user = await repository.fetchEmail({ email })
 
 		if (!user) return null
 

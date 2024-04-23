@@ -2,8 +2,12 @@ import {
 	CreateUserContractInput,
 	CreateUserContractOutput,
 	FetchAllUserContractOutput,
+	FetchEmailUserContractInput,
+	FetchEmailUserContractOutput,
+	FetchIdUserContractInput,
+	FetchIdUserContractOutput,
 } from "@dumi/zod/contracts/user"
-import { User } from "@dumi/zod/schemas/user"
+import { User } from "@dumi/zod/schemas"
 
 export type UserRepository = {
 	create: UserCreateRepository
@@ -16,6 +20,11 @@ export type UserCreateRepository = (
 	data: CreateUserContractInput
 ) => Promise<CreateUserContractOutput | null>
 
-export type UserFetchEmailRepository = (email: string) => Promise<User | null>
+export type UserFetchEmailRepository = (
+	input: FetchEmailUserContractInput
+) => Promise<FetchEmailUserContractOutput | null>
+
 export type UserFetchAllRespository = () => Promise<FetchAllUserContractOutput>
-export type UserFetchIdRepository = (id: string) => Promise<User | null>
+export type UserFetchIdRepository = (
+	data: FetchIdUserContractInput
+) => Promise<FetchIdUserContractOutput | null>

@@ -1,20 +1,20 @@
 import { z } from "zod"
-import { ORGANIZATION_SCHEMA } from "../schemas/organization"
+import { organization } from "../schemas"
 
-export const CREATE_ORGANIZATION_INPUT = ORGANIZATION_SCHEMA.omit({
+export const CREATE_ORGANIZATION_INPUT = organization.omit({
 	id: true,
 	created_at: true,
 	updated_at: true,
 })
 
-export const CREATE_ORGANIZATION_OUTPUT = ORGANIZATION_SCHEMA
+export const CREATE_ORGANIZATION_OUTPUT = organization
 
 export const UPDATE_ORGANIZATION_INPUT = z.object({
 	id: z.string(),
-	organization: ORGANIZATION_SCHEMA,
+	organization,
 })
 
-export const UPDATE_ORGANIZATION_OUTPUT = ORGANIZATION_SCHEMA
+export const UPDATE_ORGANIZATION_OUTPUT = organization
 
 export type CreateOrganizationInput = z.infer<typeof CREATE_ORGANIZATION_INPUT>
 export type CreateOrganizationOutput = z.infer<

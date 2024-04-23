@@ -6,7 +6,7 @@ import {
 import { badRequest, ok, serverError, unauthorized } from "../../helpers/http"
 import { validateZodSchema } from "../../helpers/zod"
 import { Controller } from "../../engine/protocols"
-import { User } from "@dumi/zod/schemas/user"
+import { User } from "@dumi/zod/schemas"
 
 const validateServiceResponse = (response?: User | null) => {
 	if (!response || !response?.email || response.status !== "ACTIVE")

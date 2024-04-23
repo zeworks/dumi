@@ -37,10 +37,10 @@ describe("user fetch id controller", () => {
 			expect(fetched_user_response.status).toEqual(Status.Ok)
 
 			if (fetched_user_response.type === "success") {
-				expect(fetched_user_response.data.id).toEqual(
+				expect(fetched_user_response.data?.id).toEqual(
 					created_user_response.data.id
 				)
-				expect(fetched_user_response.data.status).toEqual("ACTIVE")
+				expect(fetched_user_response.data?.status).toEqual("ACTIVE")
 				console.info(
 					"fetched user by id controller",
 					JSON.stringify(fetched_user_response)

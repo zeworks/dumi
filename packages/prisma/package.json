@@ -12,6 +12,7 @@
     "db:seed": "ts-node seed.ts"
   },
   "devDependencies": {
+    "@dumi/crypto": "workspace:*",
     "@dumi/env": "workspace:*",
     "@dumi/tsconfig": "workspace:*",
     "@types/node": "^20.12.7",

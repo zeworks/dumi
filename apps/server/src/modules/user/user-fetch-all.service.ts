@@ -1,4 +1,4 @@
-import { User } from "@dumi/zod/schemas/user"
+import { User } from "@dumi/zod/schemas"
 import { UserFetchAllRespository, UserRepository } from "./repositories"
 
 export type UserFetchAllService = () => Promise<Array<User>>

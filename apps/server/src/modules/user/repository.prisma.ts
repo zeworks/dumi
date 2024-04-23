@@ -17,7 +17,7 @@ const userPrismaRepository: UserRepository = {
 		return user
 	},
 
-	fetchEmail: async (email) => {
+	fetchEmail: async ({ email }) => {
 		const user = await db.user.findFirst({
 			where: { email },
 		})
@@ -28,7 +28,7 @@ const userPrismaRepository: UserRepository = {
 		return db.user.findMany()
 	},
 
-	fetchId: (id) => db.user.findUnique({ where: { id } }),
+	fetchId: async ({ id }) => db.user.findUnique({ where: { id } }),
 }
 
 export default userPrismaRepository

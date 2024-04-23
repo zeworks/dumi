@@ -14,7 +14,9 @@ describe("user fetch id service", () => {
 		})
 
 		if (user?.id) {
-			const service = await userFetchIdService(repository)(user?.id)
+			const service = await userFetchIdService(repository)({
+				id: user?.id,
+			})
 			expect(service?.id).toEqual(user.id)
 		}
 	})

@@ -1,13 +1,16 @@
 import { PrismaClient } from "@prisma/client"
 import env from "@dumi/env"
+import { encrypt } from "@dumi/crypto"
 
 const prisma = new PrismaClient()
+
 async function main() {
+	const encryptedPassword = await encrypt(env.SUPER_ADMIN_PASSWORD || "@1#ç1d")
 	const user_admin = await prisma.user.create({
 		data: {
 			email: env.SUPER_ADMIN_EMAIL || "dumi-admin@mail.com",
 			first_name: env.SUPER_ADMIN_NAME || "Dumi Admin",
-			password: env.SUPER_ADMIN_PASSWORD || "@1#ç1d",
+			password: encryptedPassword,
 			status: "ACTIVE",
 			avatar: env.SUPER_ADMIN_AVATAR || null,
 		},
