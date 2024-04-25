@@ -1,3 +1,5 @@
+"use client"
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -9,10 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import Link from "next/link"
 import { NavLink } from "@/components/nav-link"
+import { useSession, signOut } from "next-auth/react"
 
 export function UserDropdown() {
+	const { data: session } = useSession()
+
+	const splittenName = session?.user?.name?.split(" ")
+	const firstCharName = splittenName?.[0].charAt(0)
+	const lastCharName = splittenName?.[splittenName?.length - 1].charAt(0)
+
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger asChild>
@@ -21,7 +29,10 @@ export function UserDropdown() {
 					className="relative h-8 w-8 select-none rounded-full bg-primary/10"
 				>
 					<Avatar className="h-8 w-8">
-						<AvatarFallback>{["J", "D"].join("")}</AvatarFallback>
+						<AvatarImage src={session?.user?.image || ""} />
+						<AvatarFallback>
+							{[firstCharName, lastCharName].join("")}
+						</AvatarFallback>
 					</Avatar>
 				</Button>
 			</DropdownMenuTrigger>
@@ -29,10 +40,10 @@ export function UserDropdown() {
 				<DropdownMenuLabel className="font-normal">
 					<div className="flex flex-col space-y-2">
 						<p className="text-sm font-medium leading-none">
-							{["John", "Doe"].join(" ")}
+							{session?.user?.name}
 						</p>
 						<p className="text-xs leading-none text-muted-foreground">
-							johndoe@example.com
+							{session?.user?.email}
 						</p>
 					</div>
 				</DropdownMenuLabel>
@@ -59,7 +70,9 @@ export function UserDropdown() {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem asChild>
-						<NavLink href="/login">Sign Out</NavLink>
+						<div onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+							Sign Out
+						</div>
 					</DropdownMenuItem>
 				</DropdownMenuGroup>
 			</DropdownMenuContent>

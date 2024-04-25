@@ -1,9 +1,8 @@
+import { Icons } from "@/components/icons"
 import Link from "next/link"
 
-import { Icons } from "@/components/icons"
-import { LoginForm } from "./_components/login-form"
-
-export default function Login() {
+// TODO: this page is to show that the user needs to create a new account.
+export default function LoginCallbackPage() {
 	return (
 		<main className="relative h-[100vh]">
 			<Link
@@ -40,7 +39,6 @@ export default function Login() {
 								Sign in to your account
 							</h1>
 						</div>
-						<LoginForm />
 						<p className="px-8 text-center text-sm text-muted-foreground">
 							By clicking continue, you agree to our{" "}
 							<Link

@@ -5,30 +5,13 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense } from "react"
 import { UserDropdown } from "./user-dropdown"
-import { Organization } from "@dumi/zod/schemas/organization"
-
-const organizations: Array<Organization> = [
-	{
-		id: "org1",
-		name: "Jose Nogueira",
-		owner: false,
-		users: [],
-		created_at: new Date(),
-	},
-	{
-		id: "org2",
-		name: "Organization 2",
-		owner: false,
-		users: [],
-		created_at: new Date(),
-	},
-]
+import { Session } from "next-auth"
 
 export function Header() {
 	return (
 		<header className="flex py-2 items-center justify-between">
 			<div className="flex w-full max-w-[190px] items-center gap-4">
-				<OrganizationSwitcher organizations={organizations} />
+				<OrganizationSwitcher />
 			</div>
 
 			<div className="flex items-center gap-4">

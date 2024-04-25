@@ -8,6 +8,12 @@ export const base = z.object({
 	updated_at: z.date().default(new Date()).optional().nullable(),
 })
 
+// export const account = base.merge(
+// 	z.object({
+// 		userId
+// 	})
+// )
+
 export const organization = base.merge(
 	z.object({
 		id: z.string().uuid().describe("organization id"),
@@ -27,10 +33,7 @@ export const organization = base.merge(
 export const user = base.merge(
 	z.object({
 		id: z.string().uuid(),
-		first_name: z
-			.string()
-			.min(4, "first_name must contain at least 4 characters"),
-		last_name: z.string().optional().nullable(),
+		name: z.string().min(4, "name must contain at least 4 characters"),
 		email: z.string().email({
 			message: "please enter a valid email",
 		}),

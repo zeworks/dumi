@@ -16,7 +16,7 @@ describe("user fetch id controller", () => {
 			{
 				body: {
 					email: "test@email.com",
-					first_name: "john",
+					name: "john",
 					status: "ACTIVE",
 				},
 			}

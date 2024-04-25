@@ -15,7 +15,7 @@ import {
 } from "./ui/command"
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Skeleton } from "./ui/skeleton"
-import { Organization } from "@dumi/zod/schemas/organization"
+import { Organization } from "@dumi/zod/schemas"
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
 type OrganizationSwitcherProps = Pick<PopoverTriggerProps, "className"> & {

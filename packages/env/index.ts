@@ -14,6 +14,8 @@ export const envSchema = z.object({
 	SUPER_ADMIN_AVATAR: z.string().optional(),
 
 	// Authentication Providers
+	NEXTAUTH_SECRET: z.string().optional(),
+	NEXTAUTH_URL: z.string().optional(),
 	GITHUB_CLIENT_ID: z.string().optional(),
 	GITHUB_CLIENT_SECRET: z.string().optional(),
 })

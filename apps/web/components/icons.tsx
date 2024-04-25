@@ -125,26 +125,35 @@ export const Icons = {
 			<path d="M21 12a9 9 0 1 1-6.219-8.56" />
 		</svg>
 	),
-	microsoft: (props: IconProps) => (
-		<svg viewBox="0 0 291.346 291.346" {...props}>
-			<g>
-				<path
-					fill="#26A6D1"
-					d="M117.547,266.156L0,249.141v-94.296h117.547V266.156z"
-				/>
-				<path
-					fill="#3DB39E"
-					d="M291.346,136.51H136.31l0.055-114.06L291.346,0.009V136.51z"
-				/>
-				<path
-					fill="#F4B459"
-					d="M291.346,291.337l-155.091-22.459l0.182-114.015h154.909V291.337z"
-				/>
-				<path
-					fill="#E2574C"
-					d="M117.547,136.51H0V42.205l117.547-17.024V136.51z"
-				/>
-			</g>
+	azure: (props: IconProps) => (
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			width={800}
+			height={800}
+			fill="none"
+			viewBox="0 0 16 16"
+			{...props}
+		>
+			<path
+				fill="url(#a)"
+				d="M15 3.622v8.512L11.5 15l-5.425-1.975v1.958L3.004 10.97l8.951.7V4.005L15 3.622zm-2.984.428L6.994 1v2.001L2.382 4.356 1 6.13v4.029l1.978.873V5.869l9.038-1.818z"
+			/>
+			<defs>
+				<linearGradient
+					id="a"
+					x1={8}
+					x2={8}
+					y1={14.956}
+					y2={1.026}
+					gradientUnits="userSpaceOnUse"
+				>
+					<stop stopColor="#0078D4" />
+					<stop offset={0.16} stopColor="#1380DA" />
+					<stop offset={0.53} stopColor="#3C91E5" />
+					<stop offset={0.82} stopColor="#559CEC" />
+					<stop offset={1} stopColor="#5EA0EF" />
+				</linearGradient>
+			</defs>
 		</svg>
 	),
 }

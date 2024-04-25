@@ -32,7 +32,7 @@ export function Header() {
 					</nav>
 				</div>
 				<Button asChild variant="secondary">
-					<Link href="/login">Login</Link>
+					<Link href="/auth/login">Sign in</Link>
 				</Button>
 			</div>
 		</header>

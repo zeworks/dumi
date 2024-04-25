@@ -16,7 +16,7 @@ class UserRepositoryMemory implements UserRepository {
 	}
 
 	create: UserCreateRepository = async (data) => {
-		const id = await encrypt(data.first_name)
+		const id = await encrypt(data.name)
 
 		const user = {
 			...data,

@@ -6,8 +6,7 @@ const userPrismaRepository: UserRepository = {
 		const user = await db.user.create({
 			data: {
 				email: data.email,
-				first_name: data.first_name,
-				last_name: data.last_name,
+				name: data.name,
 				avatar: data.avatar,
 				password: data.password,
 				status: data.status,

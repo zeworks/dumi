@@ -5,16 +5,17 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ComponentProps } from "react"
+import { ComponentProps, useEffect } from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { signIn } from "next-auth/react"
 
 type AuthenticationFormProps = ComponentProps<"div">
 
 export function LoginForm({ className, ...props }: AuthenticationFormProps) {
-	const router = useRouter()
-
 	const [isLoading, setIsLoading] = useState(false)
+	const router = useRouter()
 
 	// TODO: add authentication service
 	async function onSubmit(event: React.SyntheticEvent) {
@@ -28,14 +29,14 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 		}, 3000)
 	}
 
+	useEffect(() => {}, [])
+
 	return (
 		<div className={cn("grid gap-6", className)} {...props}>
 			<form onSubmit={onSubmit}>
 				<div className="grid gap-2">
 					<div className="grid gap-1">
-						<Label className="sr-only" htmlFor="email">
-							Email
-						</Label>
+						<Label htmlFor="email">Email</Label>
 						<Input
 							id="email"
 							placeholder="name@example.com"
@@ -47,11 +48,32 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 							disabled={isLoading}
 						/>
 					</div>
+					<div className="grid mt-2 mb-4 gap-1">
+						<div className="flex items-center">
+							<Label htmlFor="password">Password</Label>
+							<Link
+								href="/forgot-password"
+								className="ml-auto inline-block text-sm underline"
+							>
+								Forgot your password?
+							</Link>
+						</div>
+						<Input
+							id="password"
+							placeholder="******"
+							type="password"
+							autoCapitalize="none"
+							autoComplete="password"
+							autoCorrect="off"
+							required
+							disabled={isLoading}
+						/>
+					</div>
 					<Button disabled={isLoading}>
 						{isLoading && (
 							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 						)}
-						Sign In with Email
+						Sign In
 					</Button>
 				</div>
 			</form>
@@ -67,20 +89,21 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 			</div>
 			<div className="grid gap-2">
 				<Button variant="outline" type="button" disabled={isLoading}>
-					{isLoading ? (
-						<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-					) : (
-						<Icons.google className="mr-2 h-4 w-4" />
-					)}{" "}
+					<Icons.google className="mr-2 h-4 w-4" />
 					Google
 				</Button>
+				<Button
+					variant="outline"
+					type="button"
+					disabled={isLoading}
+					onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
+				>
+					<Icons.gitHub className="mr-2 h-4 w-4" />
+					GitHub
+				</Button>
 				<Button variant="outline" type="button" disabled={isLoading}>
-					{isLoading ? (
-						<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-					) : (
-						<Icons.microsoft className="mr-2 h-4 w-4 dark:fill-white" />
-					)}{" "}
-					Microsoft
+					<Icons.azure className="mr-2 h-4 w-4" />
+					Azure DevOps
 				</Button>
 			</div>
 		</div>

@@ -9,7 +9,7 @@ async function main() {
 	const user_admin = await prisma.user.create({
 		data: {
 			email: env.SUPER_ADMIN_EMAIL || "dumi-admin@mail.com",
-			first_name: env.SUPER_ADMIN_NAME || "Dumi Admin",
+			name: env.SUPER_ADMIN_NAME || "Dumi Admin",
 			password: encryptedPassword,
 			status: "ACTIVE",
 			avatar: env.SUPER_ADMIN_AVATAR || null,

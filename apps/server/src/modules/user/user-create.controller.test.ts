@@ -13,7 +13,7 @@ describe("create user controller", () => {
 		const user = await userCreateController(userService)({
 			body: {
 				email: "asdd@d.com",
-				first_name: "jose",
+				name: "jose",
 				password,
 				status: "PENDING",
 			},
@@ -22,9 +22,8 @@ describe("create user controller", () => {
 		expect(user.type).toBe("success")
 
 		if (user.type === "success") {
-			expect(user.data.first_name).toEqual("jose")
+			expect(user.data.name).toEqual("jose")
 			expect(user.data.status).toEqual("PENDING")
-			expect(user.data.last_name).toBeUndefined()
 		}
 	})
 })

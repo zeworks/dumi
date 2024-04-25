@@ -12,7 +12,7 @@ describe("user auth fetch controller", () => {
 
 		const user = await userCreateService(repository)({
 			email: "john@doe.com",
-			first_name: "john",
+			name: "john",
 			status: "ACTIVE",
 			password: "123",
 		})
@@ -41,9 +41,7 @@ describe("user auth fetch controller", () => {
 				} as any)
 
 				if (authFetchController.type === "success") {
-					expect(authFetchController.data.first_name).toEqual(
-						session.data.first_name
-					)
+					expect(authFetchController.data.name).toEqual(session.data.name)
 					expect(authFetchController.data.access_token).toEqual(
 						session.data.access_token
 					)

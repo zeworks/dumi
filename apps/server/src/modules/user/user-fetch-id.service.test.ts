@@ -9,7 +9,7 @@ describe("user fetch id service", () => {
 
 		const user = await userCreateService(repository)({
 			email: "john@doe.com",
-			first_name: "john",
+			name: "john",
 			status: "ACTIVE",
 		})
 
