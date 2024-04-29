@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense } from "react"
 import { UserDropdown } from "./user-dropdown"
-import { Session } from "next-auth"
+import { ThemeSwitcher } from "./theme-switcher"
 
 export function Header() {
 	return (
@@ -33,6 +33,7 @@ export function Header() {
 				<Separator orientation="vertical" className="h-5" />
 
 				{/* <Notifications /> */}
+				<ThemeSwitcher />
 
 				<Suspense fallback={<Skeleton className="h-8 w-8 rounded-full" />}>
 					<UserDropdown />
