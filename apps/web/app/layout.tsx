@@ -4,6 +4,7 @@ import "@/styles/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "@/providers/session"
 import { getServerSession } from "next-auth"
+import { QueryClientProvider } from "@/providers/query-client"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -28,7 +29,9 @@ export default async function RootLayout({
 					enableSystem
 					disableTransitionOnChange
 				>
-					<SessionProvider session={session}>{children}</SessionProvider>
+					<QueryClientProvider>
+						<SessionProvider session={session}>{children}</SessionProvider>
+					</QueryClientProvider>
 				</ThemeProvider>
 			</body>
 		</html>
