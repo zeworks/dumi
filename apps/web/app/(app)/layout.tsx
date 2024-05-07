@@ -1,3 +1,4 @@
+import { routes } from "@/constants"
 import { Header } from "./_components/header"
 import { SideNav } from "./_components/side-nav"
 import { getServerSession } from "next-auth"
@@ -10,7 +11,7 @@ export default async function AppLayout({
 }) {
 	const session = await getServerSession()
 
-	if (!session?.user) redirect("/auth/login")
+	if (!session?.user) redirect(routes.signin)
 
 	// display grid with SideNav on left side and content on right side
 	return (

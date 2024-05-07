@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from "@/components/nav-link"
 import { useSession, signOut } from "next-auth/react"
+import { routes } from "@/constants"
 
 export function UserDropdown() {
 	const { data: session } = useSession()
@@ -70,7 +71,7 @@ export function UserDropdown() {
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
 					<DropdownMenuItem asChild>
-						<div onClick={() => signOut({ callbackUrl: "/auth/login" })}>
+						<div onClick={() => signOut({ callbackUrl: routes.signin })}>
 							Sign Out
 						</div>
 					</DropdownMenuItem>

@@ -8,36 +8,55 @@ import { cn } from "@/lib/utils"
 import { ComponentProps, useEffect } from "react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { signIn } from "next-auth/react"
+import { useSignupMutation } from "./page.hooks"
+import { useForm } from "react-hook-form"
+import {
+	CreateUserContractInput,
+	CREATE_USER_CONTRACT_INPUT,
+} from "@dumi/zod/contracts/user"
+import { zodResolver } from "@hookform/resolvers/zod"
 
-type AuthenticationFormProps = ComponentProps<"div">
+type Props = ComponentProps<"div">
+type FormSchema = CreateUserContractInput
 
-export function LoginForm({ className, ...props }: AuthenticationFormProps) {
-	const [isLoading, setIsLoading] = useState(false)
+export function SignUpForm({ className, ...props }: Props) {
 	const router = useRouter()
+	const { data, mutate, isPending } = useSignupMutation()
+	const { control, register, handleSubmit } = useForm<FormSchema>({
+		resolver: zodResolver(CREATE_USER_CONTRACT_INPUT),
+	})
 
-	// TODO: add authentication service
-	async function onSubmit(event: React.SyntheticEvent) {
-		event.preventDefault()
-		setIsLoading(true)
-
-		setTimeout(() => {
-			// redirect to the dashboard page
-			router.push("/dashboard")
-			setIsLoading(false)
-		}, 3000)
+	async function onSubmit(data: FormSchema) {
+		mutate(data)
 	}
-
-	useEffect(() => {}, [])
 
 	return (
 		<div className={cn("grid gap-6", className)} {...props}>
-			<form onSubmit={onSubmit}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="grid gap-2">
 					<div className="grid gap-1">
+						{/* add first name and last name fields */}
+						<Label htmlFor="username">Username</Label>
+						<Input
+							{...register("name", {
+								required: true,
+							})}
+							id="username"
+							placeholder="johndoe"
+							type="text"
+							autoCapitalize="words"
+							autoComplete="username"
+							autoCorrect="on"
+							required
+						/>
+					</div>
+					<div className="grid mt-2 gap-1">
 						<Label htmlFor="email">Email</Label>
 						<Input
+							{...register("email", {
+								required: true,
+								pattern: /^\S+@\S+$/i,
+							})}
 							id="email"
 							placeholder="name@example.com"
 							type="email"
@@ -45,20 +64,16 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 							autoComplete="email"
 							autoCorrect="off"
 							required
-							disabled={isLoading}
+							disabled={isPending}
 						/>
 					</div>
 					<div className="grid mt-2 mb-4 gap-1">
-						<div className="flex items-center">
-							<Label htmlFor="password">Password</Label>
-							<Link
-								href="/forgot-password"
-								className="ml-auto inline-block text-sm underline"
-							>
-								Forgot your password?
-							</Link>
-						</div>
+						<Label htmlFor="password">Password</Label>
 						<Input
+							{...register("password", {
+								required: true,
+								minLength: 8,
+							})}
 							id="password"
 							placeholder="******"
 							type="password"
@@ -66,14 +81,14 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 							autoComplete="password"
 							autoCorrect="off"
 							required
-							disabled={isLoading}
+							disabled={isPending}
 						/>
 					</div>
-					<Button disabled={isLoading}>
-						{isLoading && (
+					<Button disabled={isPending}>
+						{isPending && (
 							<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
 						)}
-						Sign In
+						Sign up
 					</Button>
 				</div>
 			</form>
@@ -88,22 +103,9 @@ export function LoginForm({ className, ...props }: AuthenticationFormProps) {
 				</div>
 			</div>
 			<div className="grid gap-2">
-				<Button variant="outline" type="button" disabled={isLoading}>
+				<Button variant="outline" type="button" disabled={isPending}>
 					<Icons.google className="mr-2 h-4 w-4" />
 					Google
-				</Button>
-				<Button
-					variant="outline"
-					type="button"
-					disabled={isLoading}
-					onClick={() => signIn("github", { callbackUrl: "/dashboard" })}
-				>
-					<Icons.gitHub className="mr-2 h-4 w-4" />
-					GitHub
-				</Button>
-				<Button variant="outline" type="button" disabled={isLoading}>
-					<Icons.azure className="mr-2 h-4 w-4" />
-					Azure DevOps
 				</Button>
 			</div>
 		</div>
