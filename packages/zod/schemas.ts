@@ -1,18 +1,13 @@
 import { z } from "zod"
 
 export const userStatus = z.enum(["ACTIVE", "INACTIVE", "PENDING", "BLOCKED"])
+export const userOrganizationRole = z.enum(["OWNER", "MEMBER", "USER"])
 
 export const base = z.object({
 	id: z.string().uuid(),
 	created_at: z.date().default(new Date()).nullable(),
 	updated_at: z.date().default(new Date()).optional().nullable(),
 })
-
-// export const account = base.merge(
-// 	z.object({
-// 		userId
-// 	})
-// )
 
 export const organization = base.merge(
 	z.object({
@@ -30,6 +25,12 @@ export const organization = base.merge(
 	})
 )
 
+const userOrganization = z.object({
+	organization,
+	owner: z.boolean().default(false),
+	role: userOrganizationRole.default("USER"),
+})
+
 export const user = base.merge(
 	z.object({
 		id: z.string().uuid(),
@@ -44,16 +45,7 @@ export const user = base.merge(
 			.nullable(),
 		status: userStatus.default("PENDING"),
 		avatar: z.string().optional().nullable(),
-		access_token: z.string().optional().nullable(),
-		organizations: z.array(organization).optional().nullable(),
-	})
-)
-
-const userOnOrganizations = base.merge(
-	z.object({
-		user,
-		organization,
-		owner: z.boolean().default(false),
+		organizations: z.array(userOrganization).optional().nullable(),
 	})
 )
 
@@ -61,4 +53,5 @@ export type Base = z.infer<typeof base>
 export type Organization = z.infer<typeof organization>
 export type User = z.infer<typeof user>
 export type UserStatus = z.infer<typeof userStatus>
-export type UserOnOrganizations = z.infer<typeof userOnOrganizations>
+export type UserOrganizationRole = z.infer<typeof userOrganizationRole>
+export type UserOrganization = z.infer<typeof userOrganization>
