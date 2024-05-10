@@ -7,7 +7,6 @@ import {
 	FetchIdUserContractInput,
 	FetchIdUserContractOutput,
 } from "@dumi/zod/contracts/user"
-import { User } from "@dumi/zod/schemas"
 
 export type UserRepository = {
 	create: UserCreateRepository
