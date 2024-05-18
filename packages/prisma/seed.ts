@@ -6,6 +6,7 @@ const prisma = new PrismaClient()
 
 async function main() {
 	const encryptedPassword = await encrypt(env.SUPER_ADMIN_PASSWORD || "@1#ç1d")
+
 	const user_admin = await prisma.user.create({
 		data: {
 			email: env.SUPER_ADMIN_EMAIL || "dumi-admin@mail.com",
@@ -19,10 +20,15 @@ async function main() {
 	const organization = await prisma.organization.create({
 		data: {
 			name: "Dumi Org",
+			owner: {
+				connect: {
+					id: user_admin.id,
+				},
+			},
 		},
 	})
 
-	const users_organization = await prisma.usersOnOrganizations.create({
+	const members = await prisma.member.create({
 		data: {
 			organization: {
 				connect: {
@@ -34,14 +40,14 @@ async function main() {
 					id: user_admin.id,
 				},
 			},
-			owner: true,
+			role: "OWNER",
 		},
 	})
 
 	console.log({
 		user_admin,
 		organization,
-		users_organization,
+		members,
 	})
 }
 main()
