@@ -1,16 +1,16 @@
 import { Controller } from "../../engine/protocols"
-import { UserFetchIdService } from "./user-fetch-id.service"
 import { ok, serverError, unauthorized } from "../../helpers/http"
 import { User } from "@dumi/zod/schemas"
+import { UserFetchEmailService } from "./user-fetch-email.service"
 
 export const userAuthFetchController =
-	(service: UserFetchIdService): Controller<any, User> =>
+	(service: UserFetchEmailService): Controller<any, User> =>
 	async (request) => {
-		if (!request?._context?.id) return unauthorized()
+		if (!request?._context?.email) return unauthorized()
 
 		try {
 			const user = await service({
-				id: request._context.id,
+				email: request._context.email,
 			})
 
 			delete user?.password

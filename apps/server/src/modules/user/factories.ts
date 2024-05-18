@@ -6,6 +6,7 @@ import { userCreateController } from "./user-create.controller"
 import { userCreateService } from "./user-create.service"
 import { userFetchAllController } from "./user-fetch-all.controller"
 import { userFetchAllService } from "./user-fetch-all.service"
+import { userFetchEmailService } from "./user-fetch-email.service"
 import { userFetchIdController } from "./user-fetch-id-controller"
 import { userFetchIdService } from "./user-fetch-id.service"
 
@@ -24,10 +25,13 @@ export const userFetchIdServiceFactory = () =>
 export const userFetchIdControllerFactory = () =>
 	userFetchIdController(userFetchIdServiceFactory())
 
+export const userFetchEmailServiceFactory = () =>
+	userFetchEmailService(userPrismaRepository)
+
 export const userAuthCreateCredentialsServiceFactory = () =>
 	userCreateAuthCredentialsService(userPrismaRepository)
 export const userAuthCreateCredentialsControllerFactory = () =>
 	userCreateAuthCredentialsController(userAuthCreateCredentialsServiceFactory())
 
 export const userAuthFetchControllerFactory = () =>
-	userAuthFetchController(userFetchIdServiceFactory())
+	userAuthFetchController(userFetchEmailServiceFactory())
