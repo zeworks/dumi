@@ -1,54 +1,82 @@
 import { AuthOptions } from "next-auth"
 import env from "@dumi/env"
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import db from "@dumi/prisma"
 
 // providers
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
-import { generateToken } from "@/utils/jwt"
+import CredentialsProvider from "next-auth/providers/credentials"
+import {
+	githubCallbackAdapter,
+	githubProfileProvider,
+	googleCallbackAdapter,
+	googleProfileProvider,
+} from "./provider-adapter"
 
 export const auth: AuthOptions = {
-	events: {
-		async linkAccount({ user }) {
-			await db.user.update({
-				where: { id: user.id },
-				data: { emailVerified: new Date(), status: "ACTIVE" },
-			})
-		},
-	},
-	adapter: PrismaAdapter(db),
 	providers: [
-		GithubProvider({
-			clientId: env.GITHUB_CLIENT_ID || "",
-			clientSecret: env.GITHUB_CLIENT_SECRET || "",
-			profile(profile) {
-				return {
-					id: profile.id,
-					name: profile.name,
-					email: profile.email,
-					avatar: profile.avatar_url,
+		CredentialsProvider({
+			name: "credentials",
+			credentials: {},
+			async authorize(credentials) {
+				const { email, password } = credentials as {
+					email: string
+					password: string
+				}
+
+				try {
+					// call the service to create authentication
+					const response = await fetch(`${env.NEXTAPI_URL}/session`, {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify(credentials),
+					})
+
+					if (!response.ok) {
+						throw new Error("Invalid email or password")
+					}
+
+					const data = await response.json()
+
+					if (data.type === "success") return data.data
+				} catch (error) {
+					console.error(error)
+					throw error
 				}
 			},
 		}),
+		GithubProvider({
+			clientId: env.GITHUB_CLIENT_ID || "",
+			clientSecret: env.GITHUB_CLIENT_SECRET || "",
+			profile: githubProfileProvider,
+		}),
+		GoogleProvider({
+			clientId: env.GOOGLE_CLIENT_ID || "",
+			clientSecret: env.GOOGLE_CLIENT_SECRET || "",
+			profile: googleProfileProvider,
+		}),
 	],
 	session: { strategy: "jwt" },
+	secret: env.NEXTAUTH_SECRET,
 	callbacks: {
 		async jwt({ token }) {
 			if (!token.sub) return token
 
-			const user = await db.user.findFirst({
-				where: { id: token.sub },
-				select: { avatar: true },
+			const userDb = await db.user.findUnique({
+				where: { email: token.email! },
+				select: { avatar: true, id: true },
 			})
 
 			return {
 				...token,
-				avatar: user?.avatar,
+				sub: userDb?.id,
+				avatar: userDb?.avatar,
 			}
 		},
 
-		async session({ session, token }) {
+		async session({ session, token, user }) {
 			if (session.user) {
 				if (token.sub) session.user.id = token.sub
 				if (token.avatar) session.user.image = token.avatar as string
@@ -57,20 +85,23 @@ export const auth: AuthOptions = {
 			return session
 		},
 
-		async signIn(params) {
-			// we need to validate if the user already exists on database.
-			// if not, we should redirect the user to the "/auth/login-callback" screen and create an account to him
-			// we can know wich provider the user tryed to logged in, using params.account.provider
-			// we can send some aditional parameters on the URL, like first name, last name and email
-			// if (params.account?.provider === "github") {
-			// 	const token = generateToken({
-			// 		name: params.user.name,
-			// 		email: params.user.email,
-			// 	})
-			// 	return `/auth/login-callback?k=${token}`
-			// }
-			// if exists, we should just log them in
-			return true
+		async signIn(params: any): Promise<any> {
+			if (params.account?.provider === "github")
+				return githubCallbackAdapter({
+					email: params.user.email,
+					name: params.user.name,
+					avatar: params.user.avatar,
+				})
+
+			if (params.account?.provider === "google")
+				return googleCallbackAdapter({
+					email: params.user.email,
+					name: params.user.name,
+					avatar: params.user.image,
+					is_verified: params.profile.email_verified,
+				})
+
+			return params.user
 		},
 	},
 }

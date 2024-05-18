@@ -1,5 +1,5 @@
 import { preHandlerHookHandler } from "fastify"
-import { HttpErrorResponse } from "./protocols"
+import { HttpErrorResponse } from "@dumi/protocols"
 import { unauthorized } from "../helpers/http"
 import { verify } from "@dumi/crypto/jwt"
 import { User } from "@dumi/zod/schemas"

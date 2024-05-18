@@ -1,4 +1,4 @@
-import { routes } from "@/constants"
+import routes from "@/config/routes"
 import { Header } from "./_components/header"
 import { SideNav } from "./_components/side-nav"
 import { getServerSession } from "next-auth"

@@ -1,6 +1,6 @@
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
-import { routes } from "@/constants"
+import routes from "@/config/routes"
 import Link from "next/link"
 
 export function Header() {

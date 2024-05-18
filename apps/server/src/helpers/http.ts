@@ -1,8 +1,4 @@
-import {
-	Error,
-	HttpErrorResponse,
-	HttpSuccessResponse,
-} from "../engine/protocols"
+import { Error, HttpErrorResponse, HttpSuccessResponse } from "@dumi/protocols"
 import { Status } from "../engine/status"
 
 export const ok = (data: any): HttpSuccessResponse => ({

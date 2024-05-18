@@ -10,34 +10,63 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { signIn } from "next-auth/react"
+import routes from "@/config/routes"
+import { useForm } from "react-hook-form"
+import {
+	CREATE_AUTH_CREDENTIALS_CONTRACT,
+	CreateAuthCredentialsContract,
+} from "@dumi/zod/contracts/auth"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { InputController } from "@/components/input-controller"
+import { useToast } from "@/components/ui/use-toast"
 
 type Props = ComponentProps<"div">
 
 export function SignInForm({ className, ...props }: Props) {
 	const [isLoading, setIsLoading] = useState(false)
 	const router = useRouter()
+	const { toast } = useToast()
 
-	// TODO: add authentication service
-	async function onSubmit(event: React.SyntheticEvent) {
-		event.preventDefault()
+	const {
+		control,
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<CreateAuthCredentialsContract>({
+		resolver: zodResolver(CREATE_AUTH_CREDENTIALS_CONTRACT),
+	})
+
+	async function onSubmit(data: CreateAuthCredentialsContract) {
 		setIsLoading(true)
 
-		setTimeout(() => {
-			// redirect to the dashboard page
-			router.push("/dashboard")
-			setIsLoading(false)
-		}, 3000)
-	}
+		const response = await signIn("credentials", {
+			email: data.email,
+			password: data.password,
+			redirect: false,
+		})
 
-	useEffect(() => {}, [])
+		setIsLoading(false)
+		if (response?.ok) router.push(routes.dashboard)
+		else
+			toast({
+				variant: "destructive",
+				title: "Uh oh! Something went wrong.",
+				description:
+					response?.error ||
+					"An unexpected error occurred. Please try again later.",
+			})
+	}
 
 	return (
 		<div className={cn("grid gap-6", className)} {...props}>
-			<form onSubmit={onSubmit}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<div className="grid gap-2">
 					<div className="grid gap-1">
 						<Label htmlFor="email">Email</Label>
-						<Input
+						<InputController
+							register={register("email")}
+							control={control}
+							name="email"
 							id="email"
 							placeholder="name@example.com"
 							type="email"
@@ -58,7 +87,10 @@ export function SignInForm({ className, ...props }: Props) {
 								Forgot your password?
 							</Link>
 						</div>
-						<Input
+						<InputController
+							register={register("password")}
+							name="password"
+							control={control}
 							id="password"
 							placeholder="******"
 							type="password"
@@ -88,9 +120,27 @@ export function SignInForm({ className, ...props }: Props) {
 				</div>
 			</div>
 			<div className="grid gap-2">
-				<Button variant="outline" type="button" disabled={isLoading}>
+				<Button
+					onClick={() =>
+						signIn("google", {
+							callbackUrl: routes.dashboard,
+						})
+					}
+					variant="outline"
+					type="button"
+					disabled={isLoading}
+				>
 					<Icons.google className="mr-2 h-4 w-4" />
 					Google
+				</Button>
+				<Button
+					onClick={() => signIn("github")}
+					variant="outline"
+					type="button"
+					disabled={isLoading}
+				>
+					<Icons.gitHub className="mr-2 h-4 w-4" />
+					GitHub
 				</Button>
 			</div>
 		</div>

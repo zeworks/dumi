@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "@/providers/session"
 import { getServerSession } from "next-auth"
 import { QueryClientProvider } from "@/providers/query-client"
+import { Toaster } from "@/components/ui/toaster"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -33,6 +34,7 @@ export default async function RootLayout({
 						<SessionProvider session={session}>{children}</SessionProvider>
 					</QueryClientProvider>
 				</ThemeProvider>
+				<Toaster />
 			</body>
 		</html>
 	)

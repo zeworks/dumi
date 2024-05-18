@@ -5,29 +5,57 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { cn } from "@/lib/utils"
-import { ComponentProps, useEffect } from "react"
-import { useState } from "react"
+import { ComponentProps } from "react"
 import { useRouter } from "next/navigation"
 import { useSignupMutation } from "./page.hooks"
 import { useForm } from "react-hook-form"
-import {
-	CreateUserContractInput,
-	CREATE_USER_CONTRACT_INPUT,
-} from "@dumi/zod/contracts/user"
+import { CREATE_USER_CONTRACT_INPUT } from "@dumi/zod/contracts/user"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { InputController } from "@/components/input-controller"
+import { signIn } from "next-auth/react"
+import routes from "@/config/routes"
+import { useToast } from "@/components/ui/use-toast"
 
 type Props = ComponentProps<"div">
-type FormSchema = CreateUserContractInput
+type FormSchema = {
+	name: string
+	email: string
+	password: string
+}
 
 export function SignUpForm({ className, ...props }: Props) {
 	const router = useRouter()
-	const { data, mutate, isPending } = useSignupMutation()
-	const { control, register, handleSubmit } = useForm<FormSchema>({
+	const { data, mutateAsync, isPending } = useSignupMutation()
+	const { toast } = useToast()
+
+	const {
+		control,
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors },
+	} = useForm<FormSchema>({
 		resolver: zodResolver(CREATE_USER_CONTRACT_INPUT),
 	})
 
 	async function onSubmit(data: FormSchema) {
-		mutate(data)
+		const response = await mutateAsync(data)
+
+		if (response.type === "success") {
+			toast({
+				title: "Account created!",
+				description:
+					"Your account has been created. Verify your email to activate your account.",
+				variant: "default",
+			})
+			reset()
+		} else {
+			toast({
+				title: response.error.message || "Sign up failed",
+				description: response.error.detail || "Please try again later.",
+				variant: "destructive",
+			})
+		}
 	}
 
 	return (
@@ -69,12 +97,13 @@ export function SignUpForm({ className, ...props }: Props) {
 					</div>
 					<div className="grid mt-2 mb-4 gap-1">
 						<Label htmlFor="password">Password</Label>
-						<Input
-							{...register("password", {
+						<InputController
+							register={register("password", {
 								required: true,
-								minLength: 8,
 							})}
+							control={control}
 							id="password"
+							name="password"
 							placeholder="******"
 							type="password"
 							autoCapitalize="none"
@@ -103,9 +132,29 @@ export function SignUpForm({ className, ...props }: Props) {
 				</div>
 			</div>
 			<div className="grid gap-2">
-				<Button variant="outline" type="button" disabled={isPending}>
+				<Button
+					onClick={() =>
+						signIn("google", {
+							callbackUrl: routes.dashboard,
+						})
+					}
+					variant="outline"
+					type="button"
+				>
 					<Icons.google className="mr-2 h-4 w-4" />
 					Google
+				</Button>
+				<Button
+					onClick={() =>
+						signIn("github", {
+							callbackUrl: routes.dashboard,
+						})
+					}
+					variant="outline"
+					type="button"
+				>
+					<Icons.gitHub className="mr-2 h-4 w-4" />
+					GitHub
 				</Button>
 			</div>
 		</div>

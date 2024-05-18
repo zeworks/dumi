@@ -1,5 +1,7 @@
 import Link from "next/link"
 import { SignUpForm } from "./page.components"
+import { Button } from "@/components/ui/button"
+import routes from "@/config/routes"
 
 export default function SignUp() {
 	return (
@@ -10,7 +12,15 @@ export default function SignUp() {
 				</h1>
 			</div>
 			<SignUpForm />
-			<p className="px-8 text-center text-sm text-muted-foreground">
+			<div className="text-sm text-muted-foreground">
+				<span>Already have an account?</span>
+				<Button asChild variant="link" className="p-0">
+					<Link href={routes.signin} className="ms-1 text-foreground">
+						Sign in
+					</Link>
+				</Button>
+			</div>
+			<div className="px-8 text-center text-sm text-muted-foreground">
 				By clicking continue, you agree to our{" "}
 				<Link
 					href="/terms"
@@ -26,7 +36,7 @@ export default function SignUp() {
 					Privacy Policy
 				</Link>
 				.
-			</p>
+			</div>
 		</>
 	)
 }

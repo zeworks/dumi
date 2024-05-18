@@ -16,6 +16,7 @@
     "@dumi/prisma": "workspace:*",
     "@dumi/tsconfig": "workspace:*",
     "@dumi/zod": "workspace:*",
+    "@dumi/protocols": "workspace:*",
     "@jest/globals": "^29.7.0",
     "@types/node": "^20.11.24",
     "fastify": "^4.26.2",

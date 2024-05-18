@@ -1,27 +1,8 @@
 import { useMutation } from "@tanstack/react-query"
-import {
-	CreateUserContractInput,
-	CreateUserContractOutput,
-} from "@dumi/zod/contracts/user"
+import { signup } from "@/services/signup"
 
-export function useSignupMutation() {
-	const mutation = useMutation<
-		CreateUserContractOutput,
-		any,
-		CreateUserContractInput
-	>({
+export const useSignupMutation = () =>
+	useMutation({
 		mutationKey: ["signup"],
-		mutationFn: async (user) => {
-			// call signup API
-			return (await fetch("/api/signup", {
-				method: "POST",
-				body: JSON.stringify(user),
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})) as any
-		},
+		mutationFn: signup,
 	})
-
-	return mutation
-}

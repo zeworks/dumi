@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from "@/components/nav-link"
 import { useSession, signOut } from "next-auth/react"
-import { routes } from "@/constants"
+import routes from "@/config/routes"
 
 export function UserDropdown() {
 	const { data: session } = useSession()
