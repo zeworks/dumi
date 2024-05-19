@@ -18,9 +18,7 @@ export const signup = async (
 		body: JSON.stringify(params),
 	})
 
-	if (!response.ok) {
-		throw new Error("Failed to sign up")
-	}
+	if (!response.ok) throw new Error("Failed to sign up")
 
 	const data = await response.json()
 	return data
