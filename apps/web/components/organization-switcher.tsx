@@ -1,7 +1,7 @@
 "use client"
 
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { ComponentPropsWithoutRef, useState } from "react"
+import { ComponentPropsWithoutRef, useEffect, useState } from "react"
 import { cn } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button } from "./ui/button"
@@ -16,23 +16,26 @@ import {
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover"
 import { Skeleton } from "./ui/skeleton"
 import { Organization } from "@dumi/zod/schemas"
+import { useOrganizationList } from "@/services/organization"
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
-type OrganizationSwitcherProps = Pick<PopoverTriggerProps, "className"> & {
-	organizations?: Organization[]
-}
+type OrganizationSwitcherProps = Pick<PopoverTriggerProps, "className">
 
 // TODO: review this later
-export function OrganizationSwitcher({
-	className,
-	organizations = [],
-}: OrganizationSwitcherProps) {
+export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
+	const { organizations, getOrganizations } = useOrganizationList()
+
 	const [open, setOpen] = useState(false)
 	const [currentOrganization, setCurrentOrganization] =
-		useState<Organization | null>(organizations[0] ?? null)
+		useState<Organization | null>(null)
+
+	useEffect(() => {
+		getOrganizations()
+	}, [])
 
 	const renderButtonContent = () => {
-		const hasOrganizations = organizations?.length > 0
+		const hasOrganizations =
+			!!organizations?.length && organizations?.length > 0
 		const isLoading = false
 
 		if (isLoading) {
@@ -101,7 +104,7 @@ export function OrganizationSwitcher({
 					<CommandList>
 						<CommandInput placeholder="Search organization..." />
 						<CommandEmpty>No organization found.</CommandEmpty>
-						{!!organizations.length && (
+						{!!organizations?.length && (
 							<CommandGroup heading="Organizations">
 								{organizations?.map((organization) => (
 									<CommandItem
