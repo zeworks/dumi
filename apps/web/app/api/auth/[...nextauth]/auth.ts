@@ -12,6 +12,7 @@ import {
 	googleCallbackAdapter,
 	googleProfileProvider,
 } from "./provider-adapter"
+import { jwtSign, jwtVerify } from "@dumi/crypto"
 
 export const auth: AuthOptions = {
 	providers: [
@@ -60,19 +61,35 @@ export const auth: AuthOptions = {
 	],
 	session: { strategy: "jwt" },
 	secret: env.NEXTAUTH_SECRET,
+	jwt: {
+		async encode(params: any): Promise<string> {
+			return jwtSign({
+				sub: params.token.id,
+				name: params.token.name,
+				email: params.token.email,
+				avatar: params.token.avatar,
+				status: params.token.status,
+				iat: Math.floor(Date.now() / 1000), // Issue at time
+			})
+		},
+		async decode(params: any): Promise<any> {
+			return jwtVerify(params.token)
+		},
+	},
 	callbacks: {
 		async jwt({ token }) {
 			if (!token.sub) return token
 
 			const userDb = await db.user.findUnique({
 				where: { email: token.email! },
-				select: { avatar: true, id: true },
+				select: { avatar: true, id: true, status: true },
 			})
 
 			return {
 				...token,
 				sub: userDb?.id,
 				avatar: userDb?.avatar,
+				status: userDb?.status,
 			}
 		},
 
