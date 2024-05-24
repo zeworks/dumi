@@ -1,19 +1,17 @@
 import { encrypt } from "@dumi/crypto/encryption"
-import { UserCreateRepository, UserRepository } from "./repositories"
-
-export type UserCreateService = UserCreateRepository
+import { UserRepository } from "../../domain/repositories/user"
+import { CreateUserContractInput } from "@dumi/zod/contracts/user"
 
 export const userCreateService =
-	(repository: UserRepository): UserCreateRepository =>
-	async (input) => {
+	(repository: UserRepository) => async (data: CreateUserContractInput) => {
 		// fetch if there is other user with same email
-		const user = await repository.fetchEmail({ email: input.email })
+		const user = await repository.fetchEmail(data.email)
 		if (!!user) return null
 
-		const password = input.password ? await encrypt(input.password) : null
+		const password = data.password ? await encrypt(data.password) : null
 
 		const response = await repository.create({
-			...input,
+			...data,
 			password,
 		})
 

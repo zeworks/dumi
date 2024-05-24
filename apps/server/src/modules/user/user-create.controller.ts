@@ -6,11 +6,13 @@ import {
 import { Controller } from "../../engine/protocols"
 import { badRequest, conflict, ok, serverError } from "../../helpers/http"
 import { validateZodSchema } from "../../helpers/zod"
-import { UserCreateService } from "./user-create.service"
+import { UserRepository } from "../../domain/repositories/user"
+import { CreateUserService } from "../../domain/services/user"
 
 export const userCreateController =
 	(
-		service: UserCreateService
+		repository: UserRepository,
+		service: CreateUserService
 	): Controller<CreateUserContractInput, CreateUserContractOutput> =>
 	async (request) => {
 		const validation = validateZodSchema(
@@ -20,7 +22,7 @@ export const userCreateController =
 		if (validation.type === "error") return badRequest(validation.error)
 
 		try {
-			const user = await service(
+			const user = await service(repository)(
 				CREATE_USER_CONTRACT_INPUT.parse(request?.body)
 			)
 

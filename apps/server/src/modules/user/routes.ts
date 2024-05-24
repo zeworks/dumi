@@ -5,9 +5,8 @@ import {
 	userAuthCreateCredentialsControllerFactory,
 	userAuthFetchControllerFactory,
 	userCreateControllerFactory,
-	userFetchAllControllerFactory,
 	userFetchIdControllerFactory,
-} from "./factories"
+} from "../../factories/user"
 
 export default (app: AppInstance) => {
 	// create user
@@ -16,14 +15,6 @@ export default (app: AppInstance) => {
 		method: "POST",
 		preHandler: [authMiddleware],
 		handler: controllerRequestAdapter(userCreateControllerFactory()),
-	})
-
-	// fetch all the users
-	app.route({
-		url: "/users",
-		method: "GET",
-		preHandler: [authMiddleware],
-		handler: controllerRequestAdapter(userFetchAllControllerFactory()),
 	})
 
 	// fetch user by id

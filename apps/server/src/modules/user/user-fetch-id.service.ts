@@ -1,9 +1,5 @@
-import { UserFetchIdRepository, UserRepository } from "./repositories"
+import { FetchUserIdService } from "../../domain/services/user"
 
-export type UserFetchIdService = UserFetchIdRepository
-
-export const userFetchIdService =
-	(repository: UserRepository): UserFetchIdRepository =>
-	({ id }) => {
-		return repository.fetchId({ id })
-	}
+export const userFetchIdService: FetchUserIdService = (repository) => (id) => {
+	return repository.fetchId(id)
+}

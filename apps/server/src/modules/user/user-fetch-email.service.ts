@@ -1,9 +1,7 @@
-import { UserFetchEmailRepository, UserRepository } from "./repositories"
+import { UserRepository } from "../../domain/repositories/user"
+import { FetchUserEmailService } from "../../domain/services/user"
 
-export type UserFetchEmailService = UserFetchEmailRepository
-
-export const userFetchEmailService =
-	(repository: UserRepository): UserFetchEmailRepository =>
-	({ email }) => {
-		return repository.fetchEmail({ email })
+export const userFetchEmailService: FetchUserEmailService =
+	(repository: UserRepository) => (email) => {
+		return repository.fetchEmail(email)
 	}

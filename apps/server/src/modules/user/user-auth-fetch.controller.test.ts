@@ -1,10 +1,10 @@
 import { describe, expect, test } from "@jest/globals"
-import UserRepositoryMemory from "./repository.memory"
 import { userCreateService } from "./user-create.service"
 import { userCreateAuthCredentialsService } from "./user-auth-create-credentials.service"
 import { userCreateAuthCredentialsController } from "./user-auth-create-credentials.controller"
 import { userAuthFetchController } from "./user-auth-fetch.controller"
 import { userFetchEmailService } from "./user-fetch-email.service"
+import UserRepositoryMemory from "../../repositories/user.memory"
 
 describe("user auth fetch controller", () => {
 	test("should fetch user auth with success", async () => {
@@ -30,9 +30,9 @@ describe("user auth fetch controller", () => {
 			)
 
 			if (session.type === "success") {
-				const authFetchService = userFetchEmailService(repository)
 				const authFetchController = await userAuthFetchController(
-					authFetchService
+					repository,
+					userFetchEmailService
 				)({
 					_context: {
 						...user,

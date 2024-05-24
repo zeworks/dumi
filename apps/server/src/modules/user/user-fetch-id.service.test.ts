@@ -1,7 +1,7 @@
 import { describe, expect, test } from "@jest/globals"
-import UserRepositoryMemory from "./repository.memory"
 import { userCreateService } from "./user-create.service"
 import { userFetchIdService } from "./user-fetch-id.service"
+import UserRepositoryMemory from "../../repositories/user.memory"
 
 describe("user fetch id service", () => {
 	test("should fetch user by id with success", async () => {
@@ -14,9 +14,7 @@ describe("user fetch id service", () => {
 		})
 
 		if (user?.id) {
-			const service = await userFetchIdService(repository)({
-				id: user?.id,
-			})
+			const service = await userFetchIdService(repository)(user?.id)
 			expect(service?.id).toEqual(user.id)
 		}
 	})

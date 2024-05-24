@@ -11,7 +11,7 @@ test("should fetch all organizations", async () => {
 		email: "john@example.com",
 		avatar: "https://example.com/avatar.png",
 		status: "ACTIVE",
-		created_at: new Date(),
+		createdAt: new Date(),
 	}
 
 	repository.create({
@@ -25,7 +25,7 @@ test("should fetch all organizations", async () => {
 				user: fake_user,
 			},
 		],
-		created_at: new Date(),
+		createdAt: new Date(),
 	})
 
 	const response = await repository.fetchAll()
