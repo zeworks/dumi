@@ -1,6 +1,7 @@
 import { AuthOptions } from "next-auth"
 import env from "@dumi/env"
 import db from "@dumi/prisma"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 // providers
 import GithubProvider from "next-auth/providers/github"
@@ -59,6 +60,7 @@ export const auth: AuthOptions = {
 			profile: googleProfileProvider,
 		}),
 	],
+	adapter: PrismaAdapter(db),
 	session: { strategy: "jwt" },
 	secret: env.NEXTAUTH_SECRET,
 	jwt: {
@@ -104,19 +106,10 @@ export const auth: AuthOptions = {
 
 		async signIn(params: any): Promise<any> {
 			if (params.account?.provider === "github")
-				return githubCallbackAdapter({
-					email: params.user.email,
-					name: params.user.name,
-					avatar: params.user.avatar,
-				})
+				return githubCallbackAdapter(params)
 
 			if (params.account?.provider === "google")
-				return googleCallbackAdapter({
-					email: params.user.email,
-					name: params.user.name,
-					avatar: params.user.image,
-					is_verified: params.profile.email_verified,
-				})
+				return googleCallbackAdapter(params)
 
 			return params.user
 		},

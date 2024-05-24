@@ -1,50 +1,82 @@
 import db from "@dumi/prisma"
 import { User } from "next-auth"
 
-type GitHubAdapterInput = {
-	name: string
-	email: string
-	avatar?: string
-}
-
-type GoogleAdapterInput = {
-	name: string
-	email: string
-	avatar?: string
-	is_verified: boolean
-}
-
 type ProviderAdapterOutput = User | string | undefined
 
-export const githubCallbackAdapter = async ({
-	email,
-	name,
-	avatar,
-}: GitHubAdapterInput): Promise<ProviderAdapterOutput> => {
+export const githubCallbackAdapter = async (
+	params: any
+): Promise<ProviderAdapterOutput> => {
+	const { account, user, profile } = params
+
 	try {
-		const user = await db.user.findUnique({
-			where: { email: email! },
+		// Check if there is an existing account with the provider and providerAccountId
+		const existingAccount = await db.account.findUnique({
+			where: {
+				provider_providerAccountId: {
+					provider: account.provider,
+					providerAccountId: account.providerAccountId,
+				},
+			},
 		})
 
-		if (user && user.status !== "ACTIVE") {
+		const existingUser = await db.user.findUnique({
+			where: { email: user.email! },
+		})
+
+		if (existingUser && existingUser.status !== "ACTIVE") {
 			return "/auth/account-inactive"
 		}
 
-		// if the user exists, we should log them in
-		if (user) {
+		if (existingUser) {
+			if (!existingAccount) {
+				await db.account.create({
+					data: {
+						userId: existingUser.id,
+						provider: account.provider,
+						providerAccountId: account.providerAccountId,
+						accessToken: account.access_token,
+						refreshToken: account.refresh_token,
+						accessTokenExpires: account.expires_at
+							? new Date(account.expires_at * 1000)
+							: null,
+						tokenType: account.token_type,
+						idToken: account.id_token,
+						scope: account.scope,
+						sessionState: account.session_state,
+					},
+				})
+			}
+
 			return {
-				...user,
-				image: user.avatar || avatar,
+				...existingUser,
+				image: existingUser.avatar || user?.image,
 			}
 		}
 
 		const newUser = await db.user.create({
 			data: {
-				name: name!,
-				email: email!,
+				name: user.name!,
+				email: user.email!,
 				emailVerified: new Date(),
 				status: "ACTIVE",
-				avatar: avatar,
+				avatar: user.avatar,
+			},
+		})
+
+		await db.account.create({
+			data: {
+				userId: newUser.id,
+				provider: account.provider,
+				providerAccountId: account.providerAccountId,
+				accessToken: account.accessToken,
+				refreshToken: account.refreshToken,
+				accessTokenExpires: account.expires_at
+					? new Date(account.expires_at * 1000)
+					: null,
+				tokenType: account.token_type,
+				idToken: account.id_token,
+				scope: account.scope,
+				sessionState: account.session_state,
 			},
 		})
 
@@ -60,38 +92,83 @@ export const githubCallbackAdapter = async ({
 	}
 }
 
-export const googleCallbackAdapter = async ({
-	email,
-	name,
-	avatar,
-	is_verified,
-}: GoogleAdapterInput): Promise<ProviderAdapterOutput> => {
-	try {
-		if (!is_verified) throw new Error("Your google account is not verified")
+export const googleCallbackAdapter = async (
+	params: any
+): Promise<ProviderAdapterOutput> => {
+	const { account, user, profile } = params
 
-		const userDatabase = await db.user.findUnique({
-			where: { email: email! },
+	try {
+		if (!profile?.email_verified)
+			throw new Error("Your google account is not verified")
+
+		// Check if there is an existing account with the provider and providerAccountId
+		const existingAccount = await db.account.findUnique({
+			where: {
+				provider_providerAccountId: {
+					provider: account.provider,
+					providerAccountId: account.providerAccountId,
+				},
+			},
 		})
 
-		if (userDatabase && userDatabase.status !== "ACTIVE") {
-			throw new Error("user is not active")
+		const existingUser = await db.user.findUnique({
+			where: { email: user.email! },
+		})
+
+		if (existingUser && existingUser.status !== "ACTIVE") {
+			return "/auth/account-inactive"
 		}
 
 		// if the user exists, we should log them in
-		if (userDatabase) {
+		if (existingUser) {
+			if (!existingAccount) {
+				await db.account.create({
+					data: {
+						userId: existingUser!.id,
+						provider: account.provider,
+						providerAccountId: account.providerAccountId,
+						accessToken: account.accessToken,
+						refreshToken: account.refreshToken,
+						accessTokenExpires: account.expires_at
+							? new Date(account.expires_at * 1000)
+							: null,
+						tokenType: account.token_type,
+						idToken: account.id_token,
+						scope: account.scope,
+						sessionState: account.session_state,
+					},
+				})
+			}
 			return {
-				...userDatabase,
-				image: userDatabase.avatar || avatar,
+				...existingUser,
+				image: existingUser.avatar || user?.image,
 			}
 		}
 
 		const newUser = await db.user.create({
 			data: {
-				name: name!,
-				email: email!,
+				name: user.name!,
+				email: user.email!,
 				emailVerified: new Date(),
 				status: "ACTIVE",
-				avatar: avatar,
+				avatar: user.image,
+			},
+		})
+
+		await db.account.create({
+			data: {
+				userId: newUser.id,
+				provider: account.provider,
+				providerAccountId: account.providerAccountId,
+				accessToken: account.accessToken,
+				refreshToken: account.refreshToken,
+				accessTokenExpires: account.expires_at
+					? new Date(account.expires_at * 1000)
+					: null,
+				tokenType: account.token_type,
+				idToken: account.id_token,
+				scope: account.scope,
+				sessionState: account.session_state,
 			},
 		})
 
