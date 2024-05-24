@@ -5,8 +5,8 @@ export const memberRole = z.enum(["OWNER", "MEMBER", "USER"])
 
 export const base = z.object({
 	id: z.string().uuid(),
-	created_at: z.date().default(new Date()).nullable(),
-	updated_at: z.date().default(new Date()).optional().nullable(),
+	createdAt: z.date().default(new Date()).nullable(),
+	updatedAt: z.date().default(new Date()).optional().nullable(),
 })
 
 export const user = base.merge(

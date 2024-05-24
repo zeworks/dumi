@@ -3,8 +3,8 @@ import { user } from "../schemas"
 
 export const CREATE_USER_CONTRACT_INPUT = user.omit({
 	id: true,
-	created_at: true,
-	updated_at: true,
+	createdAt: true,
+	updatedAt: true,
 	organizations: true,
 })
 
