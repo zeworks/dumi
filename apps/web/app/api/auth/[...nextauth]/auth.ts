@@ -1,6 +1,6 @@
 import { AuthOptions } from "next-auth"
 import env from "@dumi/env"
-import db from "@dumi/prisma"
+import db from "@/lib/db"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 // providers
@@ -8,6 +8,7 @@ import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import {
+	credentialsCallbackAdapter,
 	githubCallbackAdapter,
 	githubProfileProvider,
 	googleCallbackAdapter,
@@ -66,6 +67,7 @@ export const auth: AuthOptions = {
 	jwt: {
 		async encode(params: any): Promise<string> {
 			return jwtSign({
+				id: params.token.id,
 				sub: params.token.id,
 				name: params.token.name,
 				email: params.token.email,
@@ -80,7 +82,7 @@ export const auth: AuthOptions = {
 	},
 	callbacks: {
 		async jwt({ token }) {
-			if (!token.sub) return token
+			if (!token.sub || !!token.id) return token
 
 			const userDb = await db.user.findUnique({
 				where: { email: token.email! },
@@ -89,6 +91,7 @@ export const auth: AuthOptions = {
 
 			return {
 				...token,
+				id: userDb?.id,
 				sub: userDb?.id,
 				avatar: userDb?.avatar,
 				status: userDb?.status,
@@ -111,7 +114,7 @@ export const auth: AuthOptions = {
 			if (params.account?.provider === "google")
 				return googleCallbackAdapter(params)
 
-			return params.user
+			return credentialsCallbackAdapter(params)
 		},
 	},
 }

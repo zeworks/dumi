@@ -1,12 +1,12 @@
 import Link from "next/link"
 import { redirect } from "next/navigation"
-import { getServerSession } from "next-auth"
 import { SignInForm } from "./page.components"
 import routes from "@/config/routes"
 import { Button } from "@/components/ui/button"
+import { getServerAuthSession } from "@/lib/server-session"
 
 export default async function SignIn() {
-	const session = await getServerSession()
+	const session = await getServerAuthSession()
 
 	if (!!session?.user) redirect("/dashboard")
 

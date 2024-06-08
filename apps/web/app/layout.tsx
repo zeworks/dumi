@@ -3,9 +3,9 @@ import { Inter } from "next/font/google"
 import "@/styles/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { SessionProvider } from "@/providers/session"
-import { getServerSession } from "next-auth"
 import { QueryClientProvider } from "@/providers/query-client"
 import { Toaster } from "@/components/ui/toaster"
+import { getServerAuthSession } from "@/lib/server-session"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -19,7 +19,7 @@ export default async function RootLayout({
 }: Readonly<{
 	children: React.ReactNode
 }>) {
-	const session = await getServerSession()
+	const session = await getServerAuthSession()
 
 	return (
 		<html lang="en" suppressHydrationWarning>

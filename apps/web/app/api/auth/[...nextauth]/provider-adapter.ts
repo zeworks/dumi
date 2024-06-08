@@ -1,4 +1,4 @@
-import db from "@dumi/prisma"
+import db from "@/lib/db"
 import { User } from "next-auth"
 
 type ProviderAdapterOutput = User | string | undefined
@@ -184,12 +184,60 @@ export const googleCallbackAdapter = async (
 	}
 }
 
-export const githubProfileProvider = (profile: any) => ({
-	id: profile.id,
-	name: profile.name,
-	email: profile.email,
-	avatar: profile.avatar_url,
-})
+export const credentialsCallbackAdapter = async (params: any) => {
+	const { account, user } = params
+
+	try {
+		if (user.status !== "ACTIVE") return "/auth/account-inactive"
+
+		// Check if there is an existing account with the provider and providerAccountId
+		const existingAccount = await db.account.findUnique({
+			where: {
+				provider_providerAccountId: {
+					provider: account.provider,
+					providerAccountId: account.providerAccountId,
+				},
+			},
+		})
+
+		// if the user exists, we should log them in
+		if (!existingAccount) {
+			await db.account.create({
+				data: {
+					userId: user!.id,
+					provider: account.provider,
+					providerAccountId: account.providerAccountId,
+					accessToken: account.accessToken,
+					refreshToken: account.refreshToken,
+					accessTokenExpires: account.expires_at
+						? new Date(account.expires_at * 1000)
+						: null,
+					tokenType: account.token_type,
+					idToken: account.id_token,
+					scope: account.scope,
+					sessionState: account.session_state,
+				},
+			})
+		}
+
+		return {
+			...user,
+			image: user.avatar,
+		}
+	} catch (error) {
+		console.error(error)
+		throw error
+	}
+}
+
+export const githubProfileProvider = (profile: any) => {
+	return {
+		id: profile.id,
+		name: profile.name,
+		email: profile.email,
+		avatar: profile.avatar_url,
+	}
+}
 
 export const googleProfileProvider = (profile: any) => ({
 	id: profile.id || profile.sub,

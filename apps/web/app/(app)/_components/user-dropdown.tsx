@@ -1,5 +1,3 @@
-"use client"
-
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -12,11 +10,11 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from "@/components/nav-link"
-import { useSession, signOut } from "next-auth/react"
-import routes from "@/config/routes"
+import { getServerAuthSession } from "@/lib/server-session"
+import { SignOutButton } from "./user-dropdown.components"
 
-export function UserDropdown() {
-	const { data: session } = useSession()
+export async function UserDropdown() {
+	const session = await getServerAuthSession()
 
 	const splittenName = session?.user?.name?.split(" ")
 	const firstCharName = splittenName?.[0].charAt(0)
@@ -70,11 +68,7 @@ export function UserDropdown() {
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>
-					<DropdownMenuItem asChild>
-						<div onClick={() => signOut({ callbackUrl: routes.signin })}>
-							Sign Out
-						</div>
-					</DropdownMenuItem>
+					<SignOutButton />
 				</DropdownMenuGroup>
 			</DropdownMenuContent>
 		</DropdownMenu>

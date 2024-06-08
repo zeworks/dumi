@@ -30,7 +30,13 @@ export const user = base.merge(
 const member = z.object({
 	id: z.string().uuid(),
 	role: memberRole.default("USER"),
-	user,
+	user: user.pick({
+		id: true,
+		email: true,
+		name: true,
+		avatar: true,
+		status: true,
+	}),
 })
 
 export const organization = base.merge(
@@ -46,7 +52,13 @@ export const organization = base.merge(
 			})
 			.describe("organization name"),
 		avatar: z.string().optional().nullable().describe("organization avatar"),
-		owner: user,
+		owner: user.pick({
+			id: true,
+			avatar: true,
+			email: true,
+			name: true,
+			status: true,
+		}),
 		members: z
 			.array(member)
 			.optional()

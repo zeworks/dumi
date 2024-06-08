@@ -25,7 +25,7 @@ export const fetchUserOrganizationsController =
 					detail: "user is is not valid or does not exist",
 				})
 
-			if (!organizations.length) return noContent()
+			if (!organizations.length) return ok([])
 
 			return ok(organizations)
 		} catch (error) {

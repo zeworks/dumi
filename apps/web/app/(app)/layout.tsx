@@ -1,17 +1,17 @@
 import routes from "@/config/routes"
 import { Header } from "./_components/header"
 import { SideNav } from "./_components/side-nav"
-import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
+import { getServerAuthSession } from "@/lib/server-session"
 
 export default async function AppLayout({
 	children,
 }: {
 	children: React.ReactNode
 }) {
-	const session = await getServerSession()
+	const session = await getServerAuthSession()
 
-	if (!session?.user) redirect(routes.signin)
+	if (session === null) redirect(routes.signin)
 
 	// display grid with SideNav on left side and content on right side
 	return (
