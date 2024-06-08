@@ -3,8 +3,8 @@ import { organization } from "../schemas"
 
 export const CREATE_ORGANIZATION_INPUT = organization.omit({
 	id: true,
-	created_at: true,
-	updated_at: true,
+	createdAt: true,
+	updatedAt: true,
 })
 
 export const CREATE_ORGANIZATION_OUTPUT = organization

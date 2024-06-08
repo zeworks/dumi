@@ -1,17 +1,20 @@
 import { AuthOptions } from "next-auth"
 import env from "@dumi/env"
-import db from "@dumi/prisma"
+import db from "@/lib/db"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
 
 // providers
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import {
+	credentialsCallbackAdapter,
 	githubCallbackAdapter,
 	githubProfileProvider,
 	googleCallbackAdapter,
 	googleProfileProvider,
 } from "./provider-adapter"
+import { jwtSign, jwtVerify } from "@dumi/crypto"
 
 export const auth: AuthOptions = {
 	providers: [
@@ -58,21 +61,40 @@ export const auth: AuthOptions = {
 			profile: googleProfileProvider,
 		}),
 	],
+	adapter: PrismaAdapter(db),
 	session: { strategy: "jwt" },
 	secret: env.NEXTAUTH_SECRET,
+	jwt: {
+		async encode(params: any): Promise<string> {
+			return jwtSign({
+				id: params.token.id,
+				sub: params.token.id,
+				name: params.token.name,
+				email: params.token.email,
+				avatar: params.token.avatar,
+				status: params.token.status,
+				iat: Math.floor(Date.now() / 1000), // Issue at time
+			})
+		},
+		async decode(params: any): Promise<any> {
+			return jwtVerify(params.token)
+		},
+	},
 	callbacks: {
 		async jwt({ token }) {
-			if (!token.sub) return token
+			if (!token.sub || !!token.id) return token
 
 			const userDb = await db.user.findUnique({
 				where: { email: token.email! },
-				select: { avatar: true, id: true },
+				select: { avatar: true, id: true, status: true },
 			})
 
 			return {
 				...token,
+				id: userDb?.id,
 				sub: userDb?.id,
 				avatar: userDb?.avatar,
+				status: userDb?.status,
 			}
 		},
 
@@ -87,21 +109,12 @@ export const auth: AuthOptions = {
 
 		async signIn(params: any): Promise<any> {
 			if (params.account?.provider === "github")
-				return githubCallbackAdapter({
-					email: params.user.email,
-					name: params.user.name,
-					avatar: params.user.avatar,
-				})
+				return githubCallbackAdapter(params)
 
 			if (params.account?.provider === "google")
-				return googleCallbackAdapter({
-					email: params.user.email,
-					name: params.user.name,
-					avatar: params.user.image,
-					is_verified: params.profile.email_verified,
-				})
+				return googleCallbackAdapter(params)
 
-			return params.user
+			return credentialsCallbackAdapter(params)
 		},
 	},
 }

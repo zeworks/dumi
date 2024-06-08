@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 import { CREATE_USER_CONTRACT_INPUT } from "@dumi/zod/contracts/user"
-import db from "@dumi/prisma"
 import { encrypt } from "@dumi/crypto"
+import db from "@/lib/db"
 import { HttpErrorResponse, HttpSuccessResponse } from "@dumi/protocols"
 
 async function handler(request: NextRequest) {

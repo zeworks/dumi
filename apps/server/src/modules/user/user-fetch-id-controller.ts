@@ -4,13 +4,15 @@ import {
 	FetchIdUserContractOutput,
 } from "@dumi/zod/contracts/user"
 import { Controller } from "../../engine/protocols"
-import { UserFetchIdService } from "./user-fetch-id.service"
 import { badRequest, notFound, ok, serverError } from "../../helpers/http"
 import { validateZodSchema } from "../../helpers/zod"
+import { UserRepository } from "../../domain/repositories/user"
+import { FetchUserIdService } from "../../domain/services/user"
 
 export const userFetchIdController =
 	(
-		fetchIdService: UserFetchIdService
+		repository: UserRepository,
+		fetchIdService: FetchUserIdService
 	): Controller<any, FetchIdUserContractOutput, FetchIdUserContractInput> =>
 	async (request) => {
 		const validation = validateZodSchema(
@@ -21,9 +23,7 @@ export const userFetchIdController =
 		if (validation.type === "error") return badRequest(validation.error)
 
 		try {
-			const user = await fetchIdService({
-				id: request?.params?.id!,
-			})
+			const user = await fetchIdService(repository)(request?.params?.id!)
 
 			if (!user)
 				return notFound({

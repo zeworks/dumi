@@ -3,8 +3,13 @@ import env from "@dumi/env"
 import setupRoutes from "./routes"
 import userModuleRoutes from "./modules/user/routes"
 import organizationModuleRoutes from "./modules/organization/routes"
+import userOrganizationModuleRoutes from "./modules/user-organization/routes"
 
-setupRoutes(app)([userModuleRoutes, organizationModuleRoutes]).listen(
+setupRoutes(app)([
+	userModuleRoutes,
+	organizationModuleRoutes,
+	userOrganizationModuleRoutes,
+]).listen(
 	{
 		port: Number(env.SERVER_PORT),
 	},

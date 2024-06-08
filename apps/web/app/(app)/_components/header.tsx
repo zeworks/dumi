@@ -1,13 +1,14 @@
 import { NavLink } from "@/components/nav-link"
-import { OrganizationSwitcher } from "@/components/organization-switcher"
+import { OrganizationSwitcher } from "./organization-switcher"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Suspense } from "react"
 import { UserDropdown } from "./user-dropdown"
 import { ThemeSwitcher } from "./theme-switcher"
+// import { getUserOrganizations } from "@/actions/user-organizations"
 
-export function Header() {
+export async function Header() {
 	return (
 		<header className="flex py-2 items-center justify-between">
 			<div className="flex w-full max-w-[190px] items-center gap-4">
