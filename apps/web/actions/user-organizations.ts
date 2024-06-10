@@ -19,18 +19,3 @@ export async function getUserOrganizations(
 
 	return response.type === "success" ? response.data : []
 }
-
-export async function setCurrentOrganization(organization: Organization) {
-	console.log(organization)
-	return true
-
-	// const session = await getServerAuthSession()
-	// // get from the cookies
-	// const currentOrganizationCookie = cookies().get(
-	// 	`_current_organization-${session?.user.id}`
-	// )?.value
-	// console.log(currentOrganizationCookie)
-	// return currentOrganizationCookie
-	// 	? JSON.parse(currentOrganizationCookie)
-	// 	: null
-}

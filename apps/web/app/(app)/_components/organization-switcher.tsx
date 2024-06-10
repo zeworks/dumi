@@ -24,7 +24,7 @@ import {
 } from "../../../components/ui/popover"
 import { Skeleton } from "../../../components/ui/skeleton"
 import { Organization } from "@dumi/zod/schemas"
-import { useOrganizationsList } from "../_hooks/useOrganizationsList"
+import { useOrganizationsContext } from "../_providers/organizations"
 
 type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
 type OrganizationSwitcherProps = Pick<PopoverTriggerProps, "className">
@@ -66,11 +66,16 @@ export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
 	const {
 		organizations,
 		isLoading,
-		currentOrganization,
+		currentOrganization: currentOrganizationContext,
 		setCurrentOrganization,
-	} = useOrganizationsList()
+	} = useOrganizationsContext()
 
 	const [open, setOpen] = useState(false)
+
+	const currentOrganization = useMemo(
+		() => organizations?.find((o) => o.id === currentOrganizationContext),
+		[organizations, currentOrganizationContext]
+	)
 
 	const renderButtonContent = useMemo(() => {
 		if (isLoading) {
@@ -136,14 +141,15 @@ export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
 					<CommandList>
 						<CommandInput placeholder="Search organization..." />
 						<CommandEmpty>No organization found.</CommandEmpty>
+						<CommandGroup heading="Personal"></CommandGroup>
 						<CommandGroup heading="Organizations">
 							{!!organizations?.length &&
 								organizations?.map((o) => (
 									<CommandOrganization
 										key={o.id}
 										organization={o}
-										onSelect={(selectedOrganization) => {
-											setCurrentOrganization(selectedOrganization)
+										onSelect={({ id }) => {
+											setCurrentOrganization(id)
 											setOpen(false)
 										}}
 										active={o.id === currentOrganization?.id}
