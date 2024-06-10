@@ -8,7 +8,7 @@ import { getServerAuthSession } from "@/lib/server-session"
 export default async function SignIn() {
 	const session = await getServerAuthSession()
 
-	if (!!session?.user) redirect("/dashboard")
+	if (!!session?.user) redirect(routes.dashboard)
 
 	return (
 		<>

@@ -1,4 +1,5 @@
 "use client"
+
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import routes from "@/config/routes"
 import { signOut } from "next-auth/react"
