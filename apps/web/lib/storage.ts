@@ -13,6 +13,8 @@ function useLocalStorage<T>(
 
 		try {
 			const item = window.localStorage.getItem(key)
+			if (!item || item === "undefined") return initialValue
+
 			return item ? (JSON.parse(item) as T) : initialValue
 		} catch (error) {
 			console.error(error)
