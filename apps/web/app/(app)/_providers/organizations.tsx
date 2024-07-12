@@ -3,7 +3,7 @@
 import { useGetUserOrganizations } from "../_hooks/use-get-user-organizations"
 import useLocalStorage from "@/lib/storage"
 import { Organization } from "@dumi/zod/schemas"
-import { useSession } from "next-auth/react"
+import { useSession } from "@/providers/session"
 import { createContext, useContext, useEffect } from "react"
 
 type OrganizationContextType = {

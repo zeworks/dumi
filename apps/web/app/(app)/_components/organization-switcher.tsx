@@ -141,7 +141,6 @@ export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
 					<CommandList>
 						<CommandInput placeholder="Search organization..." />
 						<CommandEmpty>No organization found.</CommandEmpty>
-						<CommandGroup heading="Personal"></CommandGroup>
 						<CommandGroup heading="Organizations">
 							{!!organizations?.length &&
 								organizations?.map((o) => (

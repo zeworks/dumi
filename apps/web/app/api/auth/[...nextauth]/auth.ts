@@ -17,6 +17,9 @@ import {
 import { jwtSign, jwtVerify } from "@dumi/crypto"
 
 export const auth: AuthOptions = {
+	pages: {
+		error: "/auth/error",
+	},
 	providers: [
 		CredentialsProvider({
 			name: "credentials",

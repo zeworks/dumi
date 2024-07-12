@@ -34,10 +34,10 @@ export function Header() {
 				</div>
 				<div>
 					<Button asChild variant="link">
-						<Link href={routes.signin}>Sign in</Link>
+						<Link href={routes.signin}>Request demo</Link>
 					</Button>
 					<Button asChild variant="default" className="ms-2">
-						<Link href={routes.signup}>Sign up</Link>
+						<Link href={routes.signin}>Try Dumi for free</Link>
 					</Button>
 				</div>
 			</div>

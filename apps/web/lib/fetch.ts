@@ -1,8 +1,6 @@
 import { cookies } from "next/headers"
-import { getServerAuthSession } from "./server-session"
 import env from "@dumi/env"
 import { HttpResponse } from "@dumi/protocols"
-import { LucideBarChartHorizontalBig } from "lucide-react"
 
 type RequestOptions<T = any> = RequestInit & {
 	body?: T

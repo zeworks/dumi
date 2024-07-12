@@ -133,7 +133,11 @@ export function SignInForm({ className, ...props }: Props) {
 					Google
 				</Button>
 				<Button
-					onClick={() => signIn("github")}
+					onClick={() =>
+						signIn("github", {
+							callbackUrl: routes.dashboard,
+						})
+					}
 					variant="outline"
 					type="button"
 					disabled={isLoading}

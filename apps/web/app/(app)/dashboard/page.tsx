@@ -1,4 +1,3 @@
-import { auth } from "@/app/api/auth/[...nextauth]/auth"
 import { EmptyContent } from "@/components/empty-content"
 
 export default async function DashboardPage() {

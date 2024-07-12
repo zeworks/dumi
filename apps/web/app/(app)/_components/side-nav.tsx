@@ -19,7 +19,7 @@ import {
 	Code2,
 	Plane,
 	Settings,
-	SquareTerminal,
+	Building,
 } from "lucide-react"
 
 export function SideNav() {
@@ -38,13 +38,13 @@ export function SideNav() {
 								variant="ghost"
 								size="icon"
 								className="rounded-lg"
-								aria-label="Playground"
+								aria-label="Organizations"
 							>
-								<SquareTerminal className="size-5" />
+								<Building className="size-5" />
 							</Button>
 						</TooltipTrigger>
 						<TooltipContent side="right" sideOffset={5}>
-							Playground
+							Organizations
 						</TooltipContent>
 					</Tooltip>
 				</TooltipProvider>
