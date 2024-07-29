@@ -25,11 +25,6 @@ export const auth: AuthOptions = {
 			name: "credentials",
 			credentials: {},
 			async authorize(credentials) {
-				const { email, password } = credentials as {
-					email: string
-					password: string
-				}
-
 				try {
 					// call the service to create authentication
 					const response = await fetch(`${env.NEXTAPI_URL}/session`, {

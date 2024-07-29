@@ -4,7 +4,7 @@ import { authMiddleware } from "../../engine/middlewares"
 import { organizationFetchAllControllerFactory } from "./factories"
 
 export default (app: AppInstance) => {
-	// create user
+	// get all organizations
 	app.route({
 		url: "/organizations",
 		method: "GET",

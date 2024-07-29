@@ -7,7 +7,7 @@ export function Hero() {
 			<div className="max-w-2xl">
 				<p className="text-xl text-muted-foreground mt-5">
 					Experience seamless integration of efficiency and ease on our
-					platform, fostering optimal productivity for your team's success.
+					platform, fostering optimal productivity for your team&apos;s success.
 				</p>
 			</div>
 		</div>
