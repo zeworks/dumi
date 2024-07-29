@@ -43,10 +43,6 @@ describe("user fetch id controller", () => {
 					created_user_response.data.id
 				)
 				expect(fetched_user_response.data?.status).toEqual("ACTIVE")
-				console.info(
-					"fetched user by id controller",
-					JSON.stringify(fetched_user_response)
-				)
 			}
 		}
 	})
