@@ -7,9 +7,9 @@ export default async function DashboardPage() {
 				Dashboard
 			</h1>
 			<EmptyContent
-				title="No data"
-				message="There is no data to display yet."
-				buttonText="Add data"
+				title="Feature coming soon"
+				message="This feature is not ready yet. Stay tuned for updates!"
+				buttonText="Notify me"
 			/>
 		</div>
 	)

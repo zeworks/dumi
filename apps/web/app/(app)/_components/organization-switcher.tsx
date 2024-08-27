@@ -66,16 +66,11 @@ export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
 	const {
 		organizations,
 		isLoading,
-		currentOrganization: currentOrganizationContext,
+		currentOrganization,
 		setCurrentOrganization,
 	} = useOrganizationsContext()
 
 	const [open, setOpen] = useState(false)
-
-	const currentOrganization = useMemo(
-		() => organizations?.find((o) => o.id === currentOrganizationContext),
-		[organizations, currentOrganizationContext]
-	)
 
 	const renderButtonContent = useMemo(() => {
 		if (isLoading) {
@@ -147,8 +142,8 @@ export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
 									<CommandOrganization
 										key={o.id}
 										organization={o}
-										onSelect={({ id }) => {
-											setCurrentOrganization(id)
+										onSelect={(organization) => {
+											setCurrentOrganization(organization)
 											setOpen(false)
 										}}
 										active={o.id === currentOrganization?.id}

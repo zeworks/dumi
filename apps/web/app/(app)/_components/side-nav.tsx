@@ -1,3 +1,5 @@
+"use client"
+
 import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,111 +14,29 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {
-	Book,
-	Bot,
-	CircleHelp,
-	Code2,
-	Plane,
-	Settings,
-	Building,
-} from "lucide-react"
+import { cn } from "@/lib/utils"
+import { CircleHelp, Plane, Settings, Building } from "lucide-react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useMemo } from "react"
 
-export function SideNav() {
+const data = [
+	{
+		url: "/organizations",
+		icon: <Building className="size-5" />,
+		label: "Organizations",
+	},
+]
+
+export default function SideNav() {
 	return (
 		<aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
-			<div className="border-b p-2">
+			<Link className="border-b p-2" href="/dashboard">
 				<Button variant="outline" size="icon" aria-label="Home">
 					<Icons.logoSmall className="size-5 fill-foreground" />
 				</Button>
-			</div>
-			<nav className="grid gap-1 p-2">
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-lg"
-								aria-label="Organizations"
-							>
-								<Building className="size-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={5}>
-							Organizations
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-lg"
-								aria-label="Models"
-							>
-								<Bot className="size-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={5}>
-							Models
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-lg"
-								aria-label="API"
-							>
-								<Code2 className="size-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={5}>
-							API
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-lg"
-								aria-label="Documentation"
-							>
-								<Book className="size-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={5}>
-							Documentation
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<Button
-								variant="ghost"
-								size="icon"
-								className="rounded-lg"
-								aria-label="Settings"
-							>
-								<Settings className="size-5" />
-							</Button>
-						</TooltipTrigger>
-						<TooltipContent side="right" sideOffset={5}>
-							Settings
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
-			</nav>
+			</Link>
+			<MainMenu menu={data} />
 			<nav className="mt-auto grid gap-1 p-2">
 				<TooltipProvider>
 					<Tooltip>
@@ -169,5 +89,68 @@ export function SideNav() {
 				</TooltipProvider>
 			</nav>
 		</aside>
+	)
+}
+
+function MainMenu({ menu }: { menu: typeof data }) {
+	const pathname = usePathname()
+
+	// validate the active menu from url pathname
+	const isActiveMenuPathname = useMemo(
+		() =>
+			menu.find((item) => {
+				// settings use case
+				if (pathname === "/settings") return true
+
+				return pathname === item.url
+			}),
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+		[pathname]
+	)
+
+	return (
+		<nav className="grid gap-1 p-2">
+			{menu?.map((item) => (
+				<TooltipProvider key={item.url}>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Link href={item.url}>
+								<Button
+									variant="ghost"
+									size="icon"
+									className={cn("rounded-lg", {
+										"bg-accent text-accent-foreground border-[1px] border-foreground dark:border-none":
+											isActiveMenuPathname,
+									})}
+									aria-label={item.label}
+								>
+									{item.icon}
+								</Button>
+							</Link>
+						</TooltipTrigger>
+						<TooltipContent side="right" sideOffset={5}>
+							{item.label}
+						</TooltipContent>
+					</Tooltip>
+				</TooltipProvider>
+			))}
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger asChild>
+						<Button
+							variant="ghost"
+							size="icon"
+							className="rounded-lg"
+							aria-label="Settings"
+						>
+							<Settings className="size-5" />
+						</Button>
+					</TooltipTrigger>
+					<TooltipContent side="right" sideOffset={5}>
+						Settings
+					</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		</nav>
 	)
 }

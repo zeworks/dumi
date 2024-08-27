@@ -1,6 +1,6 @@
 import routes from "@/config/routes"
 import { Header } from "./_components/header"
-import { SideNav } from "./_components/side-nav"
+import SideNav from "./_components/side-nav"
 import { RedirectType, redirect } from "next/navigation"
 import { getServerAuthSession } from "@/lib/server-session"
 import { OrganizationsProvider } from "./_providers/organizations"

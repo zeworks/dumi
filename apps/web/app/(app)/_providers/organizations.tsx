@@ -4,13 +4,13 @@ import { useGetUserOrganizations } from "../_hooks/use-get-user-organizations"
 import useLocalStorage from "@/lib/storage"
 import { Organization } from "@dumi/zod/schemas"
 import { useSession } from "@/providers/session"
-import { createContext, useContext, useEffect } from "react"
+import { createContext, useContext, useEffect, useMemo } from "react"
 
 type OrganizationContextType = {
 	organizations?: Organization[]
 	isLoading: boolean
-	currentOrganization?: string
-	setCurrentOrganization: (organizationId?: string) => void
+	currentOrganization?: Organization
+	setCurrentOrganization: (organization: Organization) => void
 }
 export const OrganizationsContext = createContext<OrganizationContextType>(
 	null as any
@@ -26,21 +26,30 @@ export function OrganizationsProvider({
 		session.data?.user.id
 	)
 
-	const [currentOrganization, setCurrentOrganization] = useLocalStorage<
+	const [savedOrganization, saveOrganization] = useLocalStorage<
 		string | undefined
 	>("_co", undefined)
 
 	useEffect(() => {
-		if (!currentOrganization && !!organizations?.length && !isLoading)
-			setCurrentOrganization(organizations[0].id)
+		if (!savedOrganization && !!organizations?.length && !isLoading)
+			saveOrganization(organizations[0].id)
 
 		// if is cached, and no organizations from the server
 		// clear it
-		if (!!currentOrganization && !organizations?.length && !isLoading)
-			setCurrentOrganization(undefined)
+		if (!!savedOrganization && !organizations?.length && !isLoading)
+			saveOrganization(undefined)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [organizations, currentOrganization])
+	}, [organizations, savedOrganization])
+
+	const currentOrganization = useMemo(
+		() => organizations?.find((o) => o.id === savedOrganization),
+		[organizations, savedOrganization]
+	)
+
+	const setCurrentOrganization = (organization: Organization) => {
+		saveOrganization(organization.id)
+	}
 
 	return (
 		<OrganizationsContext.Provider

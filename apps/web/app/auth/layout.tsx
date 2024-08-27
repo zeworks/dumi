@@ -35,8 +35,8 @@ export default function AuthLayout({
 						</blockquote>
 					</div>
 				</div>
-				<div className="px-4 lg:p-8 w-full min-[1024px]:max-w-[45vw] min-[1200px]:max-w-[450px] flex items-center justify-center mx-auto">
-					<div className="mx-auto flex w-full flex-col justify-center space-y-6">
+				<div className="px-4 lg:p-8 w-full min-[1024px]:max-w-[45vw] min-[1200px]:max-w-[45vw] flex items-center justify-center mx-auto">
+					<div className="mx-auto flex w-full max-w-[400px] flex-col justify-center space-y-6">
 						{children}
 					</div>
 				</div>
