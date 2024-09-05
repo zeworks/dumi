@@ -1,3 +1,5 @@
+"use client"
+
 import {
 	DropdownMenu,
 	DropdownMenuContent,
@@ -10,13 +12,13 @@ import {
 import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { NavLink } from "@/components/nav-link"
-import { getServerAuthSession } from "@/lib/server-session"
 import { SignOutButton } from "./user-dropdown.components"
+import { useSession } from "@/providers/session"
 
 export async function UserDropdown() {
-	const session = await getServerAuthSession()
+	const session = useSession()
 
-	const splittenName = session?.user?.name?.split(" ")
+	const splittenName = session?.data?.user?.name?.split(" ")
 	const firstCharName = splittenName?.[0].charAt(0)
 	const lastCharName = splittenName?.[splittenName?.length - 1].charAt(0)
 
@@ -28,7 +30,7 @@ export async function UserDropdown() {
 					className="relative h-8 w-8 select-none rounded-full bg-primary/10"
 				>
 					<Avatar className="h-8 w-8">
-						<AvatarImage src={session?.user?.image || ""} />
+						<AvatarImage src={session?.data?.user?.image || ""} />
 						<AvatarFallback>
 							{[firstCharName, lastCharName].join("")}
 						</AvatarFallback>
@@ -39,10 +41,10 @@ export async function UserDropdown() {
 				<DropdownMenuLabel className="font-normal">
 					<div className="flex flex-col space-y-2">
 						<p className="text-sm font-medium leading-none">
-							{session?.user?.name}
+							{session?.data?.user?.name}
 						</p>
 						<p className="text-xs leading-none text-muted-foreground">
-							{session?.user?.email}
+							{session?.data?.user?.email}
 						</p>
 					</div>
 				</DropdownMenuLabel>
