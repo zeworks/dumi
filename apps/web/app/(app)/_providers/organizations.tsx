@@ -1,14 +1,11 @@
 "use client"
 
-import { useGetUserOrganizations } from "../_hooks/use-get-user-organizations"
 import useLocalStorage from "@/lib/storage"
 import { Organization } from "@dumi/zod/schemas"
-import { useSession } from "@/providers/session"
 import { createContext, useContext, useEffect, useMemo } from "react"
 
 type OrganizationContextType = {
 	organizations?: Organization[]
-	isLoading: boolean
 	currentOrganization?: Organization
 	setCurrentOrganization: (organization: Organization) => void
 }
@@ -18,25 +15,22 @@ export const OrganizationsContext = createContext<OrganizationContextType>(
 
 export function OrganizationsProvider({
 	children,
+	organizations,
 }: {
+	organizations?: Organization[]
 	children: React.ReactNode
 }) {
-	const session = useSession()
-	const { data: organizations, isLoading } = useGetUserOrganizations(
-		session.data?.user.id
-	)
-
 	const [savedOrganization, saveOrganization] = useLocalStorage<
 		string | undefined
 	>("_co", undefined)
 
 	useEffect(() => {
-		if (!savedOrganization && !!organizations?.length && !isLoading)
+		if (!savedOrganization && !!organizations?.length)
 			saveOrganization(organizations[0].id)
 
 		// if is cached, and no organizations from the server
 		// clear it
-		if (!!savedOrganization && !organizations?.length && !isLoading)
+		if (!!savedOrganization && !organizations?.length)
 			saveOrganization(undefined)
 
 		// eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,7 +49,6 @@ export function OrganizationsProvider({
 		<OrganizationsContext.Provider
 			value={{
 				organizations,
-				isLoading,
 				currentOrganization,
 				setCurrentOrganization,
 			}}
