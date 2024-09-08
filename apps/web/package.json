@@ -49,6 +49,7 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@radix-ui/react-hover-card": "^1.1.1",
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.7"
   }

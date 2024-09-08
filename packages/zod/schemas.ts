@@ -42,15 +42,7 @@ const member = z.object({
 export const organization = base.merge(
 	z.object({
 		id: z.string().uuid().describe("organization id"),
-		name: z
-			.string()
-			.min(3, {
-				message: "Name must be at least 3 characters long",
-			})
-			.max(10, {
-				message: "Name cannot be longer than 10 characters",
-			})
-			.describe("organization name"),
+		name: z.string(),
 		avatar: z.string().optional().nullable().describe("organization avatar"),
 		owner: user.pick({
 			id: true,

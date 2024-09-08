@@ -2,22 +2,21 @@ import { Input, InputProps } from "./ui/input"
 
 type InputControllerProps = InputProps & {
 	register: any
-	control: any
+	errors?: Record<string, { message?: string }>
 	name: string
 }
 
 export function InputController({
 	register,
-	control,
+	name,
+	errors,
 	...rest
 }: InputControllerProps) {
 	return (
 		<>
-			<Input {...register} {...rest} />
-			{control.getFieldState(rest.name)?.error?.message && (
-				<p className="text-red-500 text-xs">
-					{control.getFieldState(rest.name).error?.message}
-				</p>
+			<Input {...register(name)} {...rest} />
+			{!!errors?.[name]?.message && (
+				<p className="text-red-500 text-xs">{errors?.[name]?.message}</p>
 			)}
 		</>
 	)

@@ -1,10 +1,17 @@
 import { z } from "zod"
 import { organization } from "../schemas"
 
-export const CREATE_ORGANIZATION_INPUT = organization.omit({
-	id: true,
-	createdAt: true,
-	updatedAt: true,
+export const CREATE_ORGANIZATION_INPUT = z.object({
+	name: z
+		.string()
+		.min(3, {
+			message: "Name must be at least 3 characters long",
+		})
+		.max(10, {
+			message: "Name cannot be longer than 10 characters",
+		})
+		.describe("organization name"),
+	ownerId: z.string().optional().describe("owner id"),
 })
 
 export const CREATE_ORGANIZATION_OUTPUT = organization

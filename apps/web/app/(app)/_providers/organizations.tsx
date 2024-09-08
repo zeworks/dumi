@@ -2,7 +2,7 @@
 
 import useLocalStorage from "@/lib/storage"
 import { Organization } from "@dumi/zod/schemas"
-import { createContext, useContext, useEffect, useMemo } from "react"
+import { createContext, useContext, useEffect, useState } from "react"
 
 type OrganizationContextType = {
 	organizations?: Organization[]
@@ -24,6 +24,8 @@ export function OrganizationsProvider({
 		string | undefined
 	>("_co", undefined)
 
+	const [currentOrganization, setCurrentOrganization] = useState<Organization>()
+
 	useEffect(() => {
 		if (!savedOrganization && !!organizations?.length)
 			saveOrganization(organizations[0].id)
@@ -36,12 +38,13 @@ export function OrganizationsProvider({
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [organizations, savedOrganization])
 
-	const currentOrganization = useMemo(
-		() => organizations?.find((o) => o.id === savedOrganization),
-		[organizations, savedOrganization]
-	)
+	useEffect(() => {
+		setCurrentOrganization(
+			organizations?.find((o) => o.id === savedOrganization)
+		)
+	}, [savedOrganization, organizations])
 
-	const setCurrentOrganization = (organization: Organization) => {
+	const onSaveOrganization = (organization: Organization) => {
 		saveOrganization(organization.id)
 	}
 
@@ -50,7 +53,7 @@ export function OrganizationsProvider({
 			value={{
 				organizations,
 				currentOrganization,
-				setCurrentOrganization,
+				setCurrentOrganization: onSaveOrganization,
 			}}
 		>
 			{children}

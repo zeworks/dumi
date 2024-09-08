@@ -1,11 +1,18 @@
 import { Icons } from "@/components/icons"
+import routes from "@/config/routes"
+import { getServerAuthSession } from "@/lib/server-session"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
-export default function AuthLayout({
+export default async function AuthLayout({
 	children,
 }: {
 	children: React.ReactNode
 }) {
+	const session = await getServerAuthSession()
+
+	if (!!session?.user) redirect(routes.dashboard)
+
 	return (
 		<main className="relative h-[100vh]">
 			<Link

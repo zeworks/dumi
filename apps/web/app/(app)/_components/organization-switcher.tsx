@@ -1,7 +1,6 @@
 "use client"
 
-import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { ComponentPropsWithoutRef, useMemo, useState } from "react"
+import { PlusIcon } from "@radix-ui/react-icons"
 import { cn } from "@/lib/utils"
 import {
 	Avatar,
@@ -9,150 +8,135 @@ import {
 	AvatarImage,
 } from "../../../components/ui/avatar"
 import { Button } from "../../../components/ui/button"
-import {
-	Command,
-	CommandEmpty,
-	CommandGroup,
-	CommandInput,
-	CommandItem,
-	CommandList,
-} from "../../../components/ui/command"
-import {
-	Popover,
-	PopoverContent,
-	PopoverTrigger,
-} from "../../../components/ui/popover"
-import { Skeleton } from "../../../components/ui/skeleton"
-import { Organization } from "@dumi/zod/schemas"
 import { useOrganizationsContext } from "../_providers/organizations"
+import { Organization } from "@dumi/zod/schemas"
+import {
+	Tooltip,
+	TooltipContent,
+	TooltipProvider,
+	TooltipTrigger,
+} from "@/components/ui/tooltip"
+import { Dialog, DialogTrigger } from "@/components/ui/dialog"
+import { DialogCreateOrganization } from "./organization-switcher.components"
 
-type PopoverTriggerProps = ComponentPropsWithoutRef<typeof PopoverTrigger>
-type OrganizationSwitcherProps = Pick<PopoverTriggerProps, "className">
-
-function CommandOrganization({
-	organization,
-	onSelect,
-	active = false,
-}: {
-	organization: Organization
-	onSelect: (organization: Organization) => void
-	active: boolean
-}) {
-	const firstChar = organization?.name?.charAt(0)
-	const lastWord = organization?.name?.includes(" ")
-		? organization?.name?.split(" ").pop()?.charAt(0)
-		: ""
-	const organizationName = `${firstChar}${lastWord}`
+function OrganizationSwitcher() {
+	const { organizations, currentOrganization, setCurrentOrganization } =
+		useOrganizationsContext()
 
 	return (
-		<CommandItem
-			key={organization.id}
-			onSelect={() => onSelect(organization)}
-			className="gap-2"
-		>
-			<Avatar className="h-5 w-5">
-				<AvatarImage src={organization?.avatar || ""} />
-				<AvatarFallback className="text-[10px]">
-					{organizationName}
-				</AvatarFallback>
-			</Avatar>
-			<span className="text-xs text-muted-foreground">{organization.name}</span>
-			{active && <CheckIcon className="ml-auto h-4 w-4" />}
-		</CommandItem>
+		<div className="flex space-x-3 items-center border-b pt-2 px-2">
+			<Organizations
+				organizations={organizations}
+				onSetOrganization={setCurrentOrganization}
+				selectedOrganization={currentOrganization}
+			/>
+		</div>
 	)
 }
 
-export function OrganizationSwitcher({ className }: OrganizationSwitcherProps) {
-	const {
-		organizations,
-		isLoading,
-		currentOrganization,
-		setCurrentOrganization,
-	} = useOrganizationsContext()
+function Organizations({
+	organizations,
+	onSetOrganization,
+	selectedOrganization,
+}: {
+	organizations?: Organization[]
+	selectedOrganization?: Organization
+	onSetOrganization: (organization: Organization) => void
+}) {
+	const getOrganizationNameInitials = (name: string) =>
+		[
+			name.split(" ")?.[0]?.charAt(0),
+			name.split(" ")?.[name.split(" ").length - 1]?.charAt(0),
+		].join("")
 
-	const [open, setOpen] = useState(false)
-
-	const renderButtonContent = useMemo(() => {
-		if (isLoading) {
-			return (
-				<>
-					<Skeleton className="h-5 w-5 rounded-full bg-primary/30" />
-					<Skeleton className="h-3 w-32 bg-primary/30" />
-				</>
-			)
-		}
-
-		if (!currentOrganization)
-			return (
-				<>
-					<Avatar className="h-5 w-5">
-						<AvatarFallback className="text-[10px]"></AvatarFallback>
-					</Avatar>
-					<span className="text-xs text-muted-foreground">
-						Select Organization
-					</span>
-					<CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-				</>
-			)
-
-		const firstChar = currentOrganization?.name?.charAt(0)
-		const lastWord = currentOrganization?.name?.includes(" ")
-			? currentOrganization?.name?.split(" ").pop()?.charAt(0)
-			: ""
-		const organizationName = `${firstChar}${lastWord}`
-
+	if (!selectedOrganization && !organizations?.length) {
 		return (
-			<>
-				<Avatar className="h-5 w-5">
-					<AvatarImage src={currentOrganization?.avatar || ""} />
-					<AvatarFallback className="text-[10px]">
-						{organizationName}
+			<TooltipProvider>
+				<Tooltip>
+					<TooltipTrigger>
+						<Dialog>
+							<DialogTrigger>
+								<Button size="icon" variant="outline" className="mb-2">
+									<PlusIcon />
+								</Button>
+							</DialogTrigger>
+							<DialogCreateOrganization />
+						</Dialog>
+					</TooltipTrigger>
+					<TooltipContent side="right">Create Organization</TooltipContent>
+				</Tooltip>
+			</TooltipProvider>
+		)
+	}
+
+	if (!selectedOrganization) return
+
+	return (
+		<div className="group relative group pb-3">
+			<Button
+				size="icon"
+				variant="outline"
+				className="relative group-hover:before:opacity-0 before:absolute before:z-[-1] before:w-full before:h-full before:border before:border-muted-foreground before:top-[4px] before:rounded-[9px] before:bg-muted-foreground before:opacity-50 before:transition-opacity before:delay-75 group-hover:after:opacity-0 after:absolute after:z-[-1] after:w-[80%] after:h-full after:border after:border-muted-foreground after:top-[7px] after:rounded-md after:bg-muted-foreground after:opacity-40 after:transition-opacity after:delay-100"
+			>
+				<Avatar className="size-full rounded-md">
+					<AvatarImage
+						src={selectedOrganization?.avatar || ""}
+						className="object-cover"
+					/>
+					<AvatarFallback className="text-md text-normal rounded-none">
+						{getOrganizationNameInitials(selectedOrganization.name)}
 					</AvatarFallback>
 				</Avatar>
-				<span className="text-xs text-muted-foreground">
-					{currentOrganization?.name}
-				</span>
-				<CaretSortIcon className="ml-auto h-4 w-4 shrink-0 opacity-50" />
-			</>
-		)
-	}, [currentOrganization, isLoading])
+			</Button>
+			<div className="group-hover:opacity-100 group-hover:visible group-hover:top-[40px] invisible transition-all flex absolute bg-background border p-2 rounded-md flex-col top-[30px] opacity-0 delay-75">
+				{organizations?.map((org) => {
+					const avatarOrgName = [
+						org?.name.split(" ")?.[0]?.charAt(0),
+						org?.name.split(" ")?.[org?.name.split(" ").length - 1]?.charAt(0),
+					].join("")
 
-	return (
-		<Popover open={open} onOpenChange={setOpen}>
-			<PopoverTrigger asChild>
-				<Button
-					variant="outline"
-					role="combobox"
-					aria-expanded={open}
-					aria-label="Select organization"
-					className={cn("w-[100%] items-center gap-2", className)}
-					disabled={isLoading}
-				>
-					{renderButtonContent}
-				</Button>
-			</PopoverTrigger>
-			<PopoverContent className="w-[200px] p-0">
-				<Command>
-					<CommandList>
-						<CommandInput placeholder="Search organization..." />
-						<CommandEmpty>No organization found.</CommandEmpty>
-						<CommandGroup heading="Organizations">
-							{!!organizations?.length &&
-								organizations?.map((o) => (
-									<CommandOrganization
-										key={o.id}
-										organization={o}
-										onSelect={(organization) => {
-											setCurrentOrganization(organization)
-											setOpen(false)
-										}}
-										active={o.id === currentOrganization?.id}
-									/>
-								))}
-						</CommandGroup>
-					</CommandList>
-				</Command>
-			</PopoverContent>
-		</Popover>
+					return (
+						<div
+							key={org.id}
+							onClick={() => onSetOrganization(org)}
+							className={cn(
+								"flex items-center space-x-2 w-[250px] cursor-pointer transition-opacity opacity-100 hover:bg-accent rounded-md p-2"
+							)}
+						>
+							<Avatar
+								className={cn(
+									"size-[40px] rounded-md border-muted-foreground ",
+									{
+										"border-[2px] border-muted-foreground dark:border-white":
+											selectedOrganization?.id === org.id,
+									}
+								)}
+							>
+								<AvatarImage src={org?.avatar || ""} className="object-cover" />
+								<AvatarFallback className="text-sm text-normal rounded-none">
+									{avatarOrgName}
+								</AvatarFallback>
+							</Avatar>
+							<span className="text-sm text-foreground">{org.name}</span>
+						</div>
+					)
+				})}
+				<Dialog>
+					<DialogTrigger>
+						<div className="flex items-center justify-start space-x-2 cursor-pointer rounded-md p-2 hover:bg-accent">
+							<div className="flex items-center justify-center rounded-md bg-muted size-[40px] text-muted-foreground">
+								<PlusIcon className="size-5" />
+							</div>
+							<span className="text-sm text-foreground">
+								Create Organization
+							</span>
+						</div>
+					</DialogTrigger>
+					<DialogCreateOrganization />
+				</Dialog>
+			</div>
+		</div>
 	)
 }
+
+export default OrganizationSwitcher
