@@ -1,6 +1,5 @@
 "use client"
 
-import { Icons } from "@/components/icons"
 import { Button } from "@/components/ui/button"
 import {
 	CardContent,
@@ -19,24 +18,24 @@ import { CircleHelp, Plane, Settings, Building } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
+import menu from "../_data/menu"
+import dynamic from "next/dynamic"
+import { Skeleton } from "@/components/ui/skeleton"
 
-const data = [
-	{
-		url: "/organizations",
-		icon: <Building className="size-5" />,
-		label: "Organizations",
-	},
-]
+const OrganizationSwitcher = dynamic(() => import("./organization-switcher"), {
+	ssr: false,
+	loading: () => (
+		<div className="flex space-x-3 items-center border-b pt-2 px-2">
+			<Skeleton className="size-[36px] rounded-md bg-muted mb-2" />
+		</div>
+	),
+})
 
 export default function SideNav() {
 	return (
 		<aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
-			<Link className="border-b p-2" href="/dashboard">
-				<Button variant="outline" size="icon" aria-label="Home">
-					<Icons.logoSmall className="size-5 fill-foreground" />
-				</Button>
-			</Link>
-			<MainMenu menu={data} />
+			<OrganizationSwitcher />
+			<MainMenu />
 			<nav className="mt-auto grid gap-1 p-2">
 				<TooltipProvider>
 					<Tooltip>
@@ -69,8 +68,6 @@ export default function SideNav() {
 							</CardContent>
 						</TooltipContent>
 					</Tooltip>
-				</TooltipProvider>
-				<TooltipProvider>
 					<Tooltip>
 						<TooltipTrigger asChild>
 							<Button
@@ -92,7 +89,7 @@ export default function SideNav() {
 	)
 }
 
-function MainMenu({ menu }: { menu: typeof data }) {
+function MainMenu() {
 	const pathname = usePathname()
 
 	// validate the active menu from url pathname
@@ -124,7 +121,7 @@ function MainMenu({ menu }: { menu: typeof data }) {
 									})}
 									aria-label={item.label}
 								>
-									{item.icon}
+									{<item.icon className="size-5" />}
 								</Button>
 							</Link>
 						</TooltipTrigger>

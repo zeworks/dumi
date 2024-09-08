@@ -1,15 +1,9 @@
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import { SignInForm } from "./page.components"
 import routes from "@/config/routes"
 import { Button } from "@/components/ui/button"
-import { getServerAuthSession } from "@/lib/server-session"
 
 export default async function SignIn() {
-	const session = await getServerAuthSession()
-
-	if (!!session?.user) redirect(routes.dashboard)
-
 	return (
 		<>
 			<div className="flex flex-col text-center">

@@ -98,10 +98,8 @@ export function SignUpForm({ className, ...props }: Props) {
 					<div className="grid mt-2 mb-4 gap-1">
 						<Label htmlFor="password">Password</Label>
 						<InputController
-							register={register("password", {
-								required: true,
-							})}
-							control={control}
+							errors={errors}
+							register={register}
 							id="password"
 							name="password"
 							placeholder="******"

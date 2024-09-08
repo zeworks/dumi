@@ -63,8 +63,8 @@ export function SignInForm({ className, ...props }: Props) {
 					<div className="grid gap-1">
 						<Label htmlFor="email">Email</Label>
 						<InputController
-							register={register("email")}
-							control={control}
+							errors={errors}
+							register={register}
 							name="email"
 							id="email"
 							placeholder="name@example.com"
@@ -87,9 +87,9 @@ export function SignInForm({ className, ...props }: Props) {
 							</Link>
 						</div>
 						<InputController
-							register={register("password")}
+							errors={errors}
+							register={register}
 							name="password"
-							control={control}
 							id="password"
 							placeholder="******"
 							type="password"
