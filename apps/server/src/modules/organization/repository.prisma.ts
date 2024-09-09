@@ -1,5 +1,5 @@
+import { OrganizationRepository } from "../../domain/repositories/organization"
 import db from "../../engine/database"
-import { OrganizationRepository } from "./repositories"
 
 export const organizationRepository: OrganizationRepository = {
 	async fetchAll() {
@@ -31,5 +31,50 @@ export const organizationRepository: OrganizationRepository = {
 				},
 			},
 		})
+	},
+
+	async create(data) {
+		// create the organization
+		const response = await db.organization.create({
+			data: {
+				name: data.name,
+				avatar: data.avatar,
+				owner: {
+					connect: {
+						id: data.ownerId,
+					},
+				},
+			},
+			include: {
+				owner: {
+					select: {
+						id: true,
+						name: true,
+						email: true,
+						status: true,
+						password: false,
+					},
+				},
+			},
+		})
+
+		// add relation between the organization and the owner, at the members table
+		await db.member.create({
+			data: {
+				organization: {
+					connect: {
+						id: response.id,
+					},
+				},
+				user: {
+					connect: {
+						id: data.ownerId,
+					},
+				},
+				role: data.role,
+			},
+		})
+
+		return response
 	},
 }

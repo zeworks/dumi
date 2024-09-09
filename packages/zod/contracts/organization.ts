@@ -1,5 +1,5 @@
 import { z } from "zod"
-import { organization } from "../schemas"
+import { memberRole, organization } from "../schemas"
 
 export const CREATE_ORGANIZATION_INPUT = z.object({
 	name: z
@@ -12,6 +12,8 @@ export const CREATE_ORGANIZATION_INPUT = z.object({
 		})
 		.describe("organization name"),
 	ownerId: z.string().optional().describe("owner id"),
+	avatar: z.string().optional().describe("organization avatar"),
+	role: memberRole.default("USER"),
 })
 
 export const CREATE_ORGANIZATION_OUTPUT = organization

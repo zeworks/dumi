@@ -3,7 +3,8 @@ import { HttpErrorResponse } from "@dumi/protocols"
 import { unauthorized } from "../helpers/http"
 import { verify } from "@dumi/crypto/jwt"
 import { User } from "@dumi/zod/schemas"
-import { userFetchIdControllerFactory } from "../factories/user"
+import db from "@dumi/prisma"
+import { Status } from "./status"
 
 export const authMiddleware: preHandlerHookHandler = async (
 	request,
@@ -30,8 +31,8 @@ export const authMiddleware: preHandlerHookHandler = async (
 		const jwt_decoded = verify(token) as User
 
 		if (!jwt_decoded)
-			return reply.status(401).send({
-				status: 401,
+			return reply.status(Status.Unauthorized).send({
+				status: Status.Unauthorized,
 				error: {
 					message: "Unauthorized",
 					detail: "Your token is invalid",
@@ -39,21 +40,23 @@ export const authMiddleware: preHandlerHookHandler = async (
 				type: "error",
 			} as HttpErrorResponse)
 
-		const user = await userFetchIdControllerFactory()({
-			params: { id: jwt_decoded.id },
+		const user = await db.user.findFirst({
+			where: {
+				id: jwt_decoded.id,
+			},
 		})
 
-		if (user.type === "error") {
-			return reply.status(user.status).send(user)
+		if (!user) {
+			return reply.status(Status.Unauthorized).send(unauthorized())
 		}
 
 		// if user is not active, should throw unauthorized error
 		if (
 			jwt_decoded &&
-			(jwt_decoded.status !== "ACTIVE" || user?.data?.status !== "ACTIVE")
+			(jwt_decoded.status !== "ACTIVE" || user?.status !== "ACTIVE")
 		)
-			return reply.status(401).send({
-				status: 401,
+			return reply.status(Status.Unauthorized).send({
+				status: Status.Unauthorized,
 				error: {
 					message: "Unauthorized",
 					detail: "Your account is not active",
@@ -71,6 +74,6 @@ export const authMiddleware: preHandlerHookHandler = async (
 
 		done()
 	} catch (error) {
-		return reply.status(401).send(unauthorized())
+		return reply.status(Status.Unauthorized).send(unauthorized())
 	}
 }

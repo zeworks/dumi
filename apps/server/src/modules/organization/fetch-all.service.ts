@@ -1,5 +1,5 @@
 import { Organization } from "@dumi/zod/schemas"
-import { OrganizationRepository } from "./repositories"
+import { OrganizationRepository } from "../../domain/repositories/organization"
 
 export const organizationFetchAllService = (
 	organizationRepository: OrganizationRepository
