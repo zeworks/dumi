@@ -16,7 +16,7 @@ export function InputController({
 		<>
 			<Input {...register(name)} {...rest} />
 			{!!errors?.[name]?.message && (
-				<p className="text-red-500 text-xs">{errors?.[name]?.message}</p>
+				<p className="text-red-500 text-xs mt-2">{errors?.[name]?.message}</p>
 			)}
 		</>
 	)

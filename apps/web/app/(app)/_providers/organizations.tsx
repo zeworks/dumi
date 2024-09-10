@@ -8,6 +8,7 @@ type OrganizationContextType = {
 	organizations?: Organization[]
 	currentOrganization?: Organization
 	setCurrentOrganization: (organization: Organization) => void
+	setOrganizations: (organizations: Organization[]) => void
 }
 export const OrganizationsContext = createContext<OrganizationContextType>(
 	null as any
@@ -15,7 +16,7 @@ export const OrganizationsContext = createContext<OrganizationContextType>(
 
 export function OrganizationsProvider({
 	children,
-	organizations,
+	organizations: defaultOrganizations,
 }: {
 	organizations?: Organization[]
 	children: React.ReactNode
@@ -23,8 +24,8 @@ export function OrganizationsProvider({
 	const [savedOrganization, saveOrganization] = useLocalStorage<
 		string | undefined
 	>("_co", undefined)
-
 	const [currentOrganization, setCurrentOrganization] = useState<Organization>()
+	const [organizations, setOrganizations] = useState(defaultOrganizations)
 
 	useEffect(() => {
 		if (!savedOrganization && !!organizations?.length)
@@ -54,6 +55,7 @@ export function OrganizationsProvider({
 				organizations,
 				currentOrganization,
 				setCurrentOrganization: onSaveOrganization,
+				setOrganizations,
 			}}
 		>
 			{children}

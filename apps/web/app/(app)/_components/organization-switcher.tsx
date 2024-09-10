@@ -18,6 +18,16 @@ import {
 } from "@/components/ui/tooltip"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { DialogCreateOrganization } from "./organization-switcher.components"
+import { useRouter } from "next/navigation"
+import { useCallback, useState } from "react"
+
+const getOrganizationNameInitials = (name: string) =>
+	[
+		name.split(" ")?.[0]?.charAt(0),
+		name.split(" ")?.[name.split(" ").length - 1]?.charAt(0),
+	]
+		.join("")
+		.toUpperCase()
 
 function OrganizationSwitcher() {
 	const { organizations, currentOrganization, setCurrentOrganization } =
@@ -43,24 +53,30 @@ function Organizations({
 	selectedOrganization?: Organization
 	onSetOrganization: (organization: Organization) => void
 }) {
-	const getOrganizationNameInitials = (name: string) =>
-		[
-			name.split(" ")?.[0]?.charAt(0),
-			name.split(" ")?.[name.split(" ").length - 1]?.charAt(0),
-		].join("")
+	const router = useRouter()
+	const [showDialogCreateOrganization, setShowDialogCreateOrganization] =
+		useState(false)
+
+	const onCreateOrganization = useCallback((organization: Organization) => {
+		setShowDialogCreateOrganization(false)
+		router.push(`/organizations/${organization.id}`)
+	}, [])
 
 	if (!selectedOrganization && !organizations?.length) {
 		return (
 			<TooltipProvider>
 				<Tooltip>
 					<TooltipTrigger>
-						<Dialog>
+						<Dialog
+							open={showDialogCreateOrganization}
+							onOpenChange={setShowDialogCreateOrganization}
+						>
 							<DialogTrigger>
 								<Button size="icon" variant="outline" className="mb-2">
 									<PlusIcon />
 								</Button>
 							</DialogTrigger>
-							<DialogCreateOrganization />
+							<DialogCreateOrganization onSuccess={onCreateOrganization} />
 						</Dialog>
 					</TooltipTrigger>
 					<TooltipContent side="right">Create Organization</TooltipContent>
@@ -83,17 +99,14 @@ function Organizations({
 						src={selectedOrganization?.avatar || ""}
 						className="object-cover"
 					/>
-					<AvatarFallback className="text-md text-normal rounded-none">
+					<AvatarFallback className="text-md font-semibold rounded-none">
 						{getOrganizationNameInitials(selectedOrganization.name)}
 					</AvatarFallback>
 				</Avatar>
 			</Button>
 			<div className="group-hover:opacity-100 group-hover:visible group-hover:top-[40px] invisible transition-all flex absolute bg-background border p-2 rounded-md flex-col top-[30px] opacity-0 delay-75">
 				{organizations?.map((org) => {
-					const avatarOrgName = [
-						org?.name.split(" ")?.[0]?.charAt(0),
-						org?.name.split(" ")?.[org?.name.split(" ").length - 1]?.charAt(0),
-					].join("")
+					const avatarOrgName = getOrganizationNameInitials(org.name)
 
 					return (
 						<div
@@ -113,7 +126,7 @@ function Organizations({
 								)}
 							>
 								<AvatarImage src={org?.avatar || ""} className="object-cover" />
-								<AvatarFallback className="text-sm text-normal rounded-none">
+								<AvatarFallback className="text-sm font-semibold rounded-none">
 									{avatarOrgName}
 								</AvatarFallback>
 							</Avatar>
@@ -121,7 +134,10 @@ function Organizations({
 						</div>
 					)
 				})}
-				<Dialog>
+				<Dialog
+					open={showDialogCreateOrganization}
+					onOpenChange={setShowDialogCreateOrganization}
+				>
 					<DialogTrigger>
 						<div className="flex items-center justify-start space-x-2 cursor-pointer rounded-md p-2 hover:bg-accent">
 							<div className="flex items-center justify-center rounded-md bg-muted size-[40px] text-muted-foreground">
@@ -132,7 +148,7 @@ function Organizations({
 							</span>
 						</div>
 					</DialogTrigger>
-					<DialogCreateOrganization />
+					<DialogCreateOrganization onSuccess={onCreateOrganization} />
 				</Dialog>
 			</div>
 		</div>

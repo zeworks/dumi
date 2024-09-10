@@ -32,7 +32,7 @@ export async function UserDropdown() {
 					<Avatar className="h-8 w-8">
 						<AvatarImage src={session?.data?.user?.image || ""} />
 						<AvatarFallback>
-							{[firstCharName, lastCharName].join("")}
+							{[firstCharName, lastCharName].join("").toUpperCase()}
 						</AvatarFallback>
 					</Avatar>
 				</Button>
