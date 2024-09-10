@@ -6,11 +6,7 @@ import { User } from "@dumi/zod/schemas"
 import db from "@dumi/prisma"
 import { Status } from "./status"
 
-export const authMiddleware: preHandlerHookHandler = async (
-	request,
-	reply,
-	done
-) => {
+export const authMiddleware: preHandlerHookHandler = async (request, reply) => {
 	const authorizationToken = request.headers?.authorization
 
 	if (!authorizationToken)
@@ -71,8 +67,6 @@ export const authMiddleware: preHandlerHookHandler = async (
 			...jwt_decoded,
 			access_token: token,
 		}
-
-		done()
 	} catch (error) {
 		return reply.status(Status.Unauthorized).send(unauthorized())
 	}
