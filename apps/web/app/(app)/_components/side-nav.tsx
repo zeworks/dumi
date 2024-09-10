@@ -14,7 +14,7 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { CircleHelp, Plane, Settings, Building } from "lucide-react"
+import { CircleHelp, Plane } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { useCallback, useMemo } from "react"
@@ -106,9 +106,9 @@ function MainMenu() {
 
 	return (
 		<nav className="grid gap-1 p-2">
-			{menu?.map((item) => (
-				<TooltipProvider key={item.url}>
-					<Tooltip>
+			<TooltipProvider>
+				{menu?.map((item) => (
+					<Tooltip key={item.url}>
 						<TooltipTrigger asChild>
 							<Link href={item.url}>
 								<Button
@@ -128,24 +128,7 @@ function MainMenu() {
 							{item.label}
 						</TooltipContent>
 					</Tooltip>
-				</TooltipProvider>
-			))}
-			<TooltipProvider>
-				<Tooltip>
-					<TooltipTrigger asChild>
-						<Button
-							variant="ghost"
-							size="icon"
-							className="rounded-lg"
-							aria-label="Settings"
-						>
-							<Settings className="size-5" />
-						</Button>
-					</TooltipTrigger>
-					<TooltipContent side="right" sideOffset={5}>
-						Settings
-					</TooltipContent>
-				</Tooltip>
+				))}
 			</TooltipProvider>
 		</nav>
 	)
