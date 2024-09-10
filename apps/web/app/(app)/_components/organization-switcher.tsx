@@ -20,6 +20,7 @@ import { Dialog, DialogTrigger } from "@/components/ui/dialog"
 import { DialogCreateOrganization } from "./organization-switcher.components"
 import { useRouter } from "next/navigation"
 import { useCallback, useState } from "react"
+import routes from "@/config/routes"
 
 const getOrganizationNameInitials = (name: string) =>
 	[
@@ -59,7 +60,7 @@ function Organizations({
 
 	const onCreateOrganization = useCallback((organization: Organization) => {
 		setShowDialogCreateOrganization(false)
-		router.push(`/organizations/${organization.id}`)
+		router.push(routes.organization.replace("{id}", organization.id))
 	}, [])
 
 	if (!selectedOrganization && !organizations?.length) {

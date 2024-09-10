@@ -1,16 +1,21 @@
-import { Building } from "lucide-react"
+import { Building, Home } from "lucide-react"
 
-type NavigationMenu = {
+export type NavigationMenu = {
 	url: string
 	icon: any
 	label: string
 }
 
 const menu: NavigationMenu[] = [
-	// {
-	// 	url: "/organizations",
-	// 	icon: Building,
-	// 	label: "Organizations",
-	// },
+	{
+		url: "/dashboard",
+		icon: Home,
+		label: "Dashboard",
+	},
+	{
+		url: "/organizations",
+		icon: Building,
+		label: "Organizations",
+	},
 ]
 export default menu

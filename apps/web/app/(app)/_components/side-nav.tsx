@@ -17,8 +17,8 @@ import { cn } from "@/lib/utils"
 import { CircleHelp, Plane, Settings, Building } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { useMemo } from "react"
-import menu from "../_data/menu"
+import { useCallback, useMemo } from "react"
+import menu, { NavigationMenu } from "../_data/menu"
 import dynamic from "next/dynamic"
 import { Skeleton } from "@/components/ui/skeleton"
 
@@ -92,16 +92,15 @@ export default function SideNav() {
 function MainMenu() {
 	const pathname = usePathname()
 
-	// validate the active menu from url pathname
-	const isActiveMenuPathname = useMemo(
-		() =>
-			menu.find((item) => {
-				// settings use case
-				if (pathname === "/settings") return true
+	const checkActiveMenu = useCallback(
+		(url: string): boolean => {
+			// Split both the pathname and the item URL into segments
+			// Will assume that the path to be checked is at the first array position
+			const [urlFromPath] = pathname.split("/").filter(Boolean)
+			const [urlFromMenu] = url.split("/").filter(Boolean)
 
-				return pathname === item.url
-			}),
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+			return urlFromMenu === urlFromPath
+		},
 		[pathname]
 	)
 
@@ -117,7 +116,7 @@ function MainMenu() {
 									size="icon"
 									className={cn("rounded-lg", {
 										"bg-accent text-accent-foreground border-[1px] border-foreground dark:border-none":
-											isActiveMenuPathname,
+											checkActiveMenu(item.url),
 									})}
 									aria-label={item.label}
 								>

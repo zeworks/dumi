@@ -6,6 +6,12 @@ import { getServerAuthSession } from "@/lib/server-session"
 import { OrganizationsProvider } from "./_providers/organizations"
 import AuthMiddlewareValidator from "@/components/auth-middleware-validator"
 import { getUserOrganizations } from "@/actions/user-organizations"
+import dynamic from "next/dynamic"
+
+const Breadcrumb = dynamic(
+	async () => await import("./_components/breadcrumb"),
+	{ ssr: false }
+)
 
 export default async function AppLayout({
 	children,
@@ -24,7 +30,10 @@ export default async function AppLayout({
 					<SideNav />
 					<main className="flex-1 flex flex-col px-4">
 						<Header />
-						<section className="py-4 flex-1">{children}</section>
+						<section className="py-4 flex-1">
+							<Breadcrumb />
+							{children}
+						</section>
 					</main>
 				</div>
 			</OrganizationsProvider>
