@@ -1,6 +1,7 @@
 "use client"
 
 import useLocalStorage from "@/lib/storage"
+import { useSession } from "@/providers/session"
 import { Organization } from "@dumi/zod/schemas"
 import { createContext, useContext, useEffect, useState } from "react"
 
@@ -10,9 +11,23 @@ type OrganizationContextType = {
 	setCurrentOrganization: (organization: Organization) => void
 	setOrganizations: (organizations: Organization[]) => void
 }
+
 export const OrganizationsContext = createContext<OrganizationContextType>(
 	null as any
 )
+
+type StoredOrganization =
+	| {
+			/**
+			 * user id
+			 */
+			uid: string
+			/**
+			 * organization id
+			 */
+			oid: string
+	  }
+	| undefined
 
 export function OrganizationsProvider({
 	children,
@@ -21,15 +36,20 @@ export function OrganizationsProvider({
 	organizations?: Organization[]
 	children: React.ReactNode
 }) {
-	const [savedOrganization, saveOrganization] = useLocalStorage<
-		string | undefined
-	>("_co", undefined)
+	const session = useSession()
+	const [savedOrganization, saveOrganization] =
+		useLocalStorage<StoredOrganization>("_co", undefined)
 	const [currentOrganization, setCurrentOrganization] = useState<Organization>()
 	const [organizations, setOrganizations] = useState(defaultOrganizations)
 
 	useEffect(() => {
+		if (!session?.data?.user?.id) return
+
 		if (!savedOrganization && !!organizations?.length)
-			saveOrganization(organizations[0].id)
+			saveOrganization({
+				uid: session.data.user.id,
+				oid: organizations[0].id,
+			})
 
 		// if is cached, and no organizations from the server
 		// clear it
@@ -40,13 +60,19 @@ export function OrganizationsProvider({
 	}, [organizations, savedOrganization])
 
 	useEffect(() => {
+		if (!organizations?.length) return
+
 		setCurrentOrganization(
-			organizations?.find((o) => o.id === savedOrganization)
+			organizations?.find((o) => o.id === savedOrganization?.oid) ||
+				organizations[0]
 		)
 	}, [savedOrganization, organizations])
 
 	const onSaveOrganization = (organization: Organization) => {
-		saveOrganization(organization.id)
+		saveOrganization({
+			uid: session.data?.user.id || "",
+			oid: organization.id,
+		})
 	}
 
 	return (

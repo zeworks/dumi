@@ -25,7 +25,9 @@ import routes from "@/config/routes"
 const getOrganizationNameInitials = (name: string) =>
 	[
 		name.split(" ")?.[0]?.charAt(0),
-		name.split(" ")?.[name.split(" ").length - 1]?.charAt(0),
+		name.split(" ").length > 1
+			? name.split(" ")?.[name.split(" ").length - 1]?.charAt(0)
+			: "",
 	]
 		.join("")
 		.toUpperCase()
@@ -89,7 +91,7 @@ function Organizations({
 	if (!selectedOrganization) return
 
 	return (
-		<div className="group relative group pb-3">
+		<div className="group flex relative group pb-3">
 			<Button
 				size="icon"
 				variant="outline"
