@@ -6,6 +6,7 @@ import { SessionProvider } from "@/providers/session"
 import { QueryClientProvider } from "@/providers/query-client"
 import { Toaster } from "@/components/ui/toaster"
 import { getServerAuthSession } from "@/lib/server-session"
+import { cn } from "@/lib/utils"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -40,7 +41,7 @@ export default async function RootLayout({
 
 	return (
 		<html lang="en" suppressHydrationWarning>
-			<body className={inter.className}>
+			<body className={cn(inter.className, "font-sans antialiased")}>
 				<ThemeProvider
 					attribute="class"
 					defaultTheme="dark"

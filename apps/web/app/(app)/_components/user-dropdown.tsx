@@ -62,11 +62,9 @@ export async function UserDropdown() {
 					<DropdownMenuItem asChild>
 						<NavLink href="">API Keys</NavLink>
 					</DropdownMenuItem>
-					{true && (
-						<DropdownMenuItem asChild>
-							<NavLink href="">Settings</NavLink>
-						</DropdownMenuItem>
-					)}
+					<DropdownMenuItem asChild>
+						<NavLink href="">Settings</NavLink>
+					</DropdownMenuItem>
 				</DropdownMenuGroup>
 				<DropdownMenuSeparator />
 				<DropdownMenuGroup>

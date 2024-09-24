@@ -43,7 +43,6 @@ export const auth: AuthOptions = {
 
 					if (data.type === "success") return data.data
 				} catch (error) {
-					console.error(error)
 					throw error
 				}
 			},

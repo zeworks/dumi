@@ -17,10 +17,11 @@ import {
 	TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { Dialog, DialogTrigger } from "@/components/ui/dialog"
-import { DialogCreateOrganization } from "./organization-switcher.components"
+import DialogCreateOrganization from "./organization-create-dialog"
 import { useRouter } from "next/navigation"
 import { useCallback, useState } from "react"
 import routes from "@/config/routes"
+import { useToast } from "@/components/ui/use-toast"
 
 const getOrganizationNameInitials = (name: string) =>
 	[
@@ -36,11 +37,20 @@ function OrganizationSwitcher() {
 	const { organizations, currentOrganization, setCurrentOrganization } =
 		useOrganizationsContext()
 
+	const router = useRouter()
+
+	// set the current organization and redirect to the dashboard page
+	const onSelectOrganization = useCallback((organization: Organization) => {
+		setCurrentOrganization(organization)
+		router.replace(routes.dashboard)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [])
+
 	return (
 		<div className="flex space-x-3 items-center border-b pt-2 px-2">
 			<Organizations
 				organizations={organizations}
-				onSetOrganization={setCurrentOrganization}
+				onSetOrganization={onSelectOrganization}
 				selectedOrganization={currentOrganization}
 			/>
 		</div>
@@ -59,11 +69,20 @@ function Organizations({
 	const router = useRouter()
 	const [showDialogCreateOrganization, setShowDialogCreateOrganization] =
 		useState(false)
+	const toast = useToast()
 
-	const onCreateOrganization = useCallback((organization: Organization) => {
-		setShowDialogCreateOrganization(false)
-		router.push(routes.organization.replace("{id}", organization.id))
-	}, [])
+	const onCreateOrganization = useCallback(
+		(organization: Organization) => {
+			setShowDialogCreateOrganization(false)
+			router.push(routes.organization.replace("{id}", organization.id))
+			toast.toast({
+				variant: "default",
+				title: "Success",
+				description: "Organization created with success!",
+			})
+		},
+		[toast, router]
+	)
 
 	if (!selectedOrganization && !organizations?.length) {
 		return (

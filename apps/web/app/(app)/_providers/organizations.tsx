@@ -3,13 +3,14 @@
 import useLocalStorage from "@/lib/storage"
 import { useSession } from "@/providers/session"
 import { Organization } from "@dumi/zod/schemas"
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useMemo, useState } from "react"
 
 type OrganizationContextType = {
 	organizations?: Organization[]
 	currentOrganization?: Organization
 	setCurrentOrganization: (organization: Organization) => void
 	setOrganizations: (organizations: Organization[]) => void
+	isOwner?: boolean
 }
 
 export const OrganizationsContext = createContext<OrganizationContextType>(
@@ -75,6 +76,11 @@ export function OrganizationsProvider({
 		})
 	}
 
+	const isOwner = useMemo(
+		() => currentOrganization?.owner?.id === session?.data?.user?.id,
+		[currentOrganization, session]
+	)
+
 	return (
 		<OrganizationsContext.Provider
 			value={{
@@ -82,6 +88,7 @@ export function OrganizationsProvider({
 				currentOrganization,
 				setCurrentOrganization: onSaveOrganization,
 				setOrganizations,
+				isOwner,
 			}}
 		>
 			{children}

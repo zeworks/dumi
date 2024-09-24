@@ -19,7 +19,7 @@ export default async function AppLayout({
 	children: React.ReactNode
 }) {
 	const session = await getServerAuthSession()
-	const organizations = await getUserOrganizations(session?.user.id)
+	const organizations = await getUserOrganizations(session?.user?.id)
 
 	if (session === null) redirect(routes.signin, RedirectType.replace)
 
@@ -30,7 +30,7 @@ export default async function AppLayout({
 					<SideNav />
 					<main className="flex-1 flex flex-col px-4">
 						<Header />
-						<section className="py-4 flex-1">
+						<section className="pt-4 flex-1">
 							<Breadcrumb />
 							{children}
 						</section>

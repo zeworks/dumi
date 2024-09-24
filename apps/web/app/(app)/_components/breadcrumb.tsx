@@ -11,6 +11,7 @@ import {
 import { usePathname } from "next/navigation"
 import { useMemo } from "react"
 import routes from "@/config/routes"
+import Link from "next/link"
 
 type BreadcrumbData = {
 	label: string
@@ -35,13 +36,12 @@ function getBreadcrumbs(pathname: string) {
 
 		// Handle dynamic segments (e.g., organization ID)
 		let href = (routes as any)[routeKey || ""] || accumulatedPath
-		if (href.includes("{id}")) {
-			href = accumulatedPath // Replace {id} with the actual segment
-		}
+		let label = segment.charAt(0).toUpperCase() + segment.slice(1) // Capitalize first char of segment
+		const isLastSegment = index === pathSegments.length - 1
 
 		breadcrumbs.push({
-			label: segment.charAt(0).toUpperCase() + segment.slice(1), // Capitalize segment
-			href: index === pathSegments.length - 1 ? null : href, // No href for last segment
+			label: label,
+			href: isLastSegment ? null : href, // No href for last segment
 		})
 
 		accumulatedPath += "/"
@@ -50,7 +50,7 @@ function getBreadcrumbs(pathname: string) {
 	return breadcrumbs
 }
 
-export default function Breadcrumb() {
+export default function Breadcrumb(props: any) {
 	const pathname = usePathname()
 	const breadcrumbs = useMemo(() => getBreadcrumbs(pathname), [pathname])
 
@@ -59,13 +59,15 @@ export default function Breadcrumb() {
 	if (!breadcrumbs.length || breadcrumbs.length === 1) return null
 
 	return (
-		<ShadcnBreadcrumb className="mb-2">
+		<ShadcnBreadcrumb className="mb-4">
 			<BreadcrumbList>
 				{breadcrumbs.map((crumb, index) => (
 					<BreadcrumbItem key={index}>
 						{crumb.href ? (
 							<>
-								<BreadcrumbLink href={crumb.href}>{crumb.label}</BreadcrumbLink>
+								<BreadcrumbLink asChild>
+									<Link href={crumb.href}>{crumb.label}</Link>
+								</BreadcrumbLink>
 								<BreadcrumbSeparator />
 							</>
 						) : (

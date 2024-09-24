@@ -19,7 +19,7 @@ import { useCreateOrganization } from "../_services/organization"
 import { Organization } from "@dumi/zod/schemas"
 import { Loader2 } from "lucide-react"
 
-export function DialogCreateOrganization({
+export default function DialogCreateOrganization({
 	onSuccess,
 }: {
 	onSuccess: (data: Organization) => void

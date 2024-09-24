@@ -33,7 +33,7 @@ const OrganizationSwitcher = dynamic(() => import("./organization-switcher"), {
 
 export default function SideNav() {
 	return (
-		<aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r">
+		<aside className="inset-y fixed left-0 z-20 flex h-full flex-col border-r bg-background">
 			<OrganizationSwitcher />
 			<MainMenu />
 			<nav className="mt-auto grid gap-1 p-2">
