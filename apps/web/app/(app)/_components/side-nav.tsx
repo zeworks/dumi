@@ -115,7 +115,7 @@ function MainMenu() {
 									variant="ghost"
 									size="icon"
 									className={cn("rounded-lg", {
-										"bg-accent text-accent-foreground border-[1px] border-foreground dark:border-none":
+										"bg-accent text-accent-foreground border-[1px] border-foreground/20 dark:border-none":
 											checkActiveMenu(item.url),
 									})}
 									aria-label={item.label}
