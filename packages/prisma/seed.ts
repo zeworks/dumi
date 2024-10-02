@@ -14,6 +14,7 @@ async function main() {
 			password: encryptedPassword,
 			status: "ACTIVE",
 			avatar: env.SUPER_ADMIN_AVATAR || null,
+			emailVerified: new Date(),
 		},
 	})
 

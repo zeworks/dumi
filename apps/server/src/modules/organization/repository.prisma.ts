@@ -103,6 +103,7 @@ export const organizationRepository: OrganizationRepository = {
 								email: true,
 								status: true,
 								password: false,
+								emailVerified: true,
 							},
 						},
 					},
