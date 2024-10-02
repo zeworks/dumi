@@ -1,14 +1,14 @@
 import { date, json } from "./scalars"
 import { Resolvers } from "./types"
-
-const helloQuery = () => "hello! 🚀"
+import Organizations from "./resolvers/organizations"
 
 export const createResolvers = (): Resolvers => {
 	return {
 		JSON: json(),
 		Date: date(),
 		Query: {
-			hello: helloQuery,
+			getOrganization: async (_, req) =>
+				Organizations().getOrganization(req.id) as any,
 		},
 	}
 }

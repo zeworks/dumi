@@ -31,10 +31,10 @@ type Member {
 }
 
 type Organization {
-	id: ID!
-	name: String!
+	id: ID
+	name: String
 	avatar: String
-	owner: User!
+	owner: User
 	members: [Member]
 }
 
@@ -44,12 +44,18 @@ type GetUserResponse {
 	data: User
 }
 
+type GetOrganizationResponse {
+	type: String!
+	status: Int!
+	data: Organization
+}
+
 # Queries
 type Query {
 	hello: String!
 	# getUser(id: ID!): GetUserResponse @auth
 	# getAllUsers: [User!]
-	# getOrganization(id: ID!): Organization
+	getOrganization(id: ID!): GetOrganizationResponse
 	# getAllOrganizations: [Organization!]
 }
 

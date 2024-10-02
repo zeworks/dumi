@@ -19,6 +19,7 @@ export const createOrganizationController =
 			CREATE_ORGANIZATION_INPUT,
 			request?.body
 		)
+
 		if (validation.type === "error") return badRequest(validation.error)
 
 		try {

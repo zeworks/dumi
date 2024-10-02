@@ -1,15 +1,15 @@
 import { HttpResponse } from "@dumi/protocols"
-import { User } from "@dumi/zod/schemas"
+import { Organization, User } from "@dumi/zod/schemas"
 
 export type Resolvers = {
 	[key: string]: any
-	// Query: {
-	// 	getUser: GraphQLRequest<{ id: string }, HttpResponse<User>>
-	// }
+	Query: {
+		getOrganization: GraphQLRequest<{ id: string }, HttpResponse<Organization>>
+	}
 }
 
-type GraphQLRequest<T = any, R = any> = (
+type GraphQLRequest<Request = any, Response = any> = (
 	_: any,
-	req: T,
+	req: Request,
 	ctx: User
-) => Promise<R>
+) => Promise<Response>

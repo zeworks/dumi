@@ -77,4 +77,42 @@ export const organizationRepository: OrganizationRepository = {
 
 		return response
 	},
+
+	async findById(id) {
+		const response = await db.organization.findFirst({
+			include: {
+				owner: {
+					select: {
+						id: true,
+						avatar: true,
+						name: true,
+						email: true,
+						status: true,
+						password: false,
+					},
+				},
+				members: {
+					select: {
+						id: true,
+						role: true,
+						user: {
+							select: {
+								id: true,
+								avatar: true,
+								name: true,
+								email: true,
+								status: true,
+								password: false,
+							},
+						},
+					},
+				},
+			},
+			where: {
+				id,
+			},
+		})
+
+		return response
+	},
 }
