@@ -6,12 +6,12 @@ import { getServerAuthSession } from "@/lib/server-session"
 import { OrganizationsProvider } from "./_providers/organizations"
 import AuthMiddlewareValidator from "@/components/auth-middleware-validator"
 import { getUserOrganizations } from "@/actions/user-organizations"
-import dynamic from "next/dynamic"
+// import dynamic from "next/dynamic"
 
-const Breadcrumb = dynamic(
-	async () => await import("./_components/breadcrumb"),
-	{ ssr: false }
-)
+// const Breadcrumb = dynamic(
+// 	async () => await import("./_components/breadcrumb"),
+// 	{ ssr: false }
+// )
 
 export default async function AppLayout({
 	children,
@@ -31,7 +31,7 @@ export default async function AppLayout({
 					<main className="flex-1 flex flex-col px-4">
 						<Header />
 						<section className="pt-4 flex-1">
-							<Breadcrumb />
+							{/* <Breadcrumb /> */}
 							{children}
 						</section>
 					</main>
