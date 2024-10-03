@@ -1,6 +1,3 @@
-import NextAuth from "next-auth"
-import { auth } from "./auth"
+import { GET, POST } from "@dumi/auth/next"
 
-const handler = NextAuth(auth)
-
-export { handler as GET, handler as POST }
+export { GET, POST }

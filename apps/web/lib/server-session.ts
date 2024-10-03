@@ -1,6 +1,6 @@
-import { auth } from "@/app/api/auth/[...nextauth]/auth"
+import { nextAuthOptions } from "@dumi/auth/next"
 import { getServerSession } from "next-auth"
 
 export function getServerAuthSession() {
-	return getServerSession(auth)
+	return getServerSession(nextAuthOptions)
 }
