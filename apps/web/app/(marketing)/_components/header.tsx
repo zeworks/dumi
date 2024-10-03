@@ -17,16 +17,16 @@ export function Header() {
 					</Link>
 					<nav>
 						<ul className="flex gap-4 items-center text-sm">
-							<li className="text-muted-foreground hover:text-white">
+							<li className="text-muted-foreground hover:text-primary dark:hover:text-white">
 								<a href="#">Product</a>
 							</li>
-							<li className="text-muted-foreground hover:text-white">
+							<li className="text-muted-foreground hover:text-primary dark:hover:text-white">
 								<a href="#">Pricing</a>
 							</li>
-							<li className="text-muted-foreground hover:text-white">
+							<li className="text-muted-foreground hover:text-primary dark:hover:text-white">
 								<a href="#">Solutions</a>
 							</li>
-							<li className="text-muted-foreground hover:text-white">
+							<li className="text-muted-foreground hover:text-primary dark:hover:text-white">
 								<a href="#">Resources</a>
 							</li>
 						</ul>
