@@ -1,17 +1,10 @@
-import routes from "@/config/routes"
-import { cn } from "@/lib/utils"
-import Link from "next/link"
 import { ReactNode } from "react"
 import NavigationSideBar from "./_components/navigation-sidebar"
 
 export default function OrganizationsLayout({
 	children,
-	...props
 }: {
 	children: ReactNode
-	params?: Partial<{
-		id: string
-	}>
 }) {
 	return (
 		<div className="flex flex-1 h-full flex-col gap-4 md:gap-8">
