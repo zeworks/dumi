@@ -13,7 +13,7 @@ type ProviderAdapterOutput = User | string | undefined
 export const githubCallbackAdapter = async (
 	params: any
 ): Promise<ProviderAdapterOutput> => {
-	const { account, user, profile } = params
+	const { account, user } = params
 
 	try {
 		// Check if there is an existing account with the provider and providerAccountId
