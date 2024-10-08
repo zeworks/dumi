@@ -1,10 +1,11 @@
-import { createOrganization } from "@/actions/organizations"
+import { createOrganization, getOrganization } from "@/actions/organizations"
 import {
 	CreateOrganizationInput,
 	CreateOrganizationOutput,
 } from "@dumi/zod/contracts/organization"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useOrganizationsContext } from "../_providers/organizations"
+import { Organization } from "@dumi/zod/schemas"
 
 export const useCreateOrganization = () => {
 	const context = useOrganizationsContext()
@@ -19,5 +20,13 @@ export const useCreateOrganization = () => {
 					newOrganization,
 				])
 		},
+	})
+}
+
+export const useGetOrganization = (id: string) => {
+	return useQuery({
+		queryKey: ["get-organization"],
+		queryFn: () => getOrganization(id),
+		refetchOnWindowFocus: false,
 	})
 }

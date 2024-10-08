@@ -30,3 +30,13 @@ export async function createOrganization(
 		throw error
 	}
 }
+
+export async function getOrganization(id: string): Promise<Organization> {
+	try {
+		const response = await fetch<Organization>("organizations/" + id)
+		if (response.type === "error") throw response.error
+		return response.data
+	} catch (error) {
+		throw error
+	}
+}
