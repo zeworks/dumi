@@ -21,6 +21,6 @@ export async function getUserOrganizations(
 		return response.type === "success" ? response.data : []
 	} catch (error) {
 		console.log("error on fetch user organizations", error)
-		return []
+		throw error
 	}
 }
