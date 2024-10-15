@@ -53,11 +53,11 @@ model User {
   createdAt     DateTime?  @default(now()) @map("created_at")
   updatedAt     DateTime?  @default(now()) @map("updated_at")
 
-  owns_organizations Organization[]
-  member_on          Member[]
-  invitations        Invitation[]
-  Account            Account[]
-  Session            Session[]
+  organization Organization[]
+  member       Member[]
+  invitation   Invitation[]
+  account      Account[]
+  session      Session[]
 
   @@map("users")
 }
