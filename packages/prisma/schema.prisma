@@ -63,7 +63,7 @@ model User {
 }
 
 model Member {
-  id String @id @default(cuid())
+  id Int @id @default(autoincrement())
 
   user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId Int  @map("user_id")
@@ -78,7 +78,7 @@ model Member {
 }
 
 model Invitation {
-  id        String           @id @default(cuid())
+  id        Int              @id @default(autoincrement())
   email     String
   status    InvitationStatus @default(PENDING)
   createdAt DateTime         @default(now()) @map("created_at")
@@ -96,7 +96,7 @@ model Invitation {
 }
 
 model Account {
-  id                 String    @id @default(cuid())
+  id                 Int       @id @default(autoincrement())
   provider           String
   providerAccountId  String    @map("provider_account_id")
   refreshToken       String?   @map("refresh_token")
@@ -115,7 +115,7 @@ model Account {
 }
 
 model Session {
-  id           String   @id @default(cuid())
+  id           Int      @id @default(autoincrement())
   sessionToken String   @unique @map("session_token")
   expires      DateTime
 
@@ -126,7 +126,7 @@ model Session {
 }
 
 model VerificationRequest {
-  id         String   @id @default(cuid())
+  id         Int      @id @default(autoincrement())
   identifier String
   token      String   @unique
   expires    DateTime
