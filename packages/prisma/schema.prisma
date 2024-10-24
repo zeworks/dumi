@@ -27,14 +27,14 @@ enum InvitationStatus {
 }
 
 model Organization {
-  id        String    @id @default(cuid())
+  id        Int       @id @default(autoincrement())
   name      String    @db.VarChar(255)
   avatar    String?
   createdAt DateTime? @default(now()) @map("created_at")
   updatedAt DateTime? @default(now()) @map("updated_at")
 
-  owner   User   @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  ownerId String @map("owner_id")
+  owner   User @relation(fields: [ownerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  ownerId Int  @map("owner_id")
 
   members     Member[]
   invitations Invitation[]
@@ -43,7 +43,7 @@ model Organization {
 }
 
 model User {
-  id            String     @id @default(cuid())
+  id            Int        @id @default(autoincrement())
   name          String
   email         String     @unique
   emailVerified DateTime?  @map("email_verified")
@@ -65,11 +65,11 @@ model User {
 model Member {
   id String @id @default(cuid())
 
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String @map("user_id")
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId Int  @map("user_id")
 
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  organizationId String       @map("organization_id")
+  organizationId Int          @map("organization_id")
 
   role MemberRole @default(USER)
 
@@ -83,12 +83,13 @@ model Invitation {
   status    InvitationStatus @default(PENDING)
   createdAt DateTime         @default(now()) @map("created_at")
   updatedAt DateTime         @default(now()) @map("updated_at")
+  token     String           @unique @map("token")
 
-  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  userId String? @map("user_id")
+  user   User? @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId Int?  @map("user_id")
 
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  organizationId String       @map("organization_id")
+  organizationId Int          @map("organization_id")
 
   @@unique([email, organizationId]) // Ensures an email can only be invited once per organization
   @@map("invitations")
@@ -96,7 +97,6 @@ model Invitation {
 
 model Account {
   id                 String    @id @default(cuid())
-  userId             String    @map("user_id")
   provider           String
   providerAccountId  String    @map("provider_account_id")
   refreshToken       String?   @map("refresh_token")
@@ -107,7 +107,8 @@ model Account {
   idToken            String?   @map("id_token")
   sessionState       String?   @map("session_state")
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @map("user_id")
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -116,10 +117,10 @@ model Account {
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique @map("session_token")
-  userId       String   @map("user_id")
   expires      DateTime
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int  @map("user_id")
 
   @@map("sessions")
 }
