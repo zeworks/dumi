@@ -192,6 +192,7 @@ export const googleCallbackAdapter = async (
 }
 
 export const credentialsCallbackAdapter = async (params: any) => {
+	console.log(params)
 	const { account, user } = params
 
 	try {
@@ -330,7 +331,7 @@ export const nextAuthOptions: AuthOptions = {
 				sub: userDb?.id,
 				avatar: userDb?.avatar,
 				status: userDb?.status,
-			}
+			} as any
 		},
 
 		async session({ session, token, user }) {
