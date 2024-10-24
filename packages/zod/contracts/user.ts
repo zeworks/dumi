@@ -5,7 +5,6 @@ export const CREATE_USER_CONTRACT_INPUT = user.omit({
 	id: true,
 	createdAt: true,
 	updatedAt: true,
-	organizations: true,
 })
 
 export const CREATE_USER_CONTRACT_OUTPUT = user
@@ -13,7 +12,7 @@ export const CREATE_USER_CONTRACT_OUTPUT = user
 export const FETCH_ALL_USER_CONTRACT_OUTPUT = z.array(user)
 
 export const FETCH_ID_USER_CONTRACT_INPUT = z.object({
-	id: z.string().describe("user id"),
+	id: z.number().describe("user id"),
 })
 
 export const FETCH_ID_USER_CONTRACT_OUTPUT = user

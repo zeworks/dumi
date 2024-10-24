@@ -4,14 +4,13 @@ export const userStatus = z.enum(["ACTIVE", "INACTIVE", "PENDING", "BLOCKED"])
 export const memberRole = z.enum(["OWNER", "MEMBER", "USER"])
 
 export const base = z.object({
-	id: z.string().uuid(),
+	id: z.number(),
 	createdAt: z.date().default(new Date()).nullable(),
 	updatedAt: z.date().default(new Date()).optional().nullable(),
 })
 
 export const user = base.merge(
 	z.object({
-		id: z.string().uuid(),
 		name: z.string().min(4, "name must contain at least 4 characters"),
 		email: z.string().email({
 			message: "please enter a valid email",
@@ -28,7 +27,7 @@ export const user = base.merge(
 )
 
 const member = z.object({
-	id: z.string().uuid(),
+	id: z.number(),
 	role: memberRole.default("USER"),
 	user: user.pick({
 		id: true,
@@ -41,7 +40,6 @@ const member = z.object({
 
 export const organization = base.merge(
 	z.object({
-		id: z.string().uuid().describe("organization id"),
 		name: z.string(),
 		avatar: z.string().optional().nullable().describe("organization avatar"),
 		owner: user.pick({
