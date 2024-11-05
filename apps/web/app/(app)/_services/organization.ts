@@ -5,7 +5,6 @@ import {
 } from "@dumi/zod/contracts/organization"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useOrganizationsContext } from "../_providers/organizations"
-import { Organization } from "@dumi/zod/schemas"
 
 export const useCreateOrganization = () => {
 	const context = useOrganizationsContext()

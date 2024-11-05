@@ -6,14 +6,12 @@ import {
 import { Controller } from "../../engine/protocols"
 import { badRequest, notFound, ok, serverError } from "../../helpers/http"
 import { FetchOrganizationByIdService } from "../../domain/services/organization"
-import { organizationRepository } from "./repository.prisma"
-import { fetchOrganizationByIdService } from "./fetch-id.service"
 
 export const fetchOrganizationByIdController =
 	(
 		repository: OrganizationRepository,
 		service: FetchOrganizationByIdService
-	): Controller<unknown, Organization | null, { id: string }> =>
+	): Controller<unknown, Organization | null, { id: number }> =>
 	async (request) => {
 		if (!request?.params?.id)
 			return badRequest({
@@ -21,8 +19,13 @@ export const fetchOrganizationByIdController =
 				detail: "Please send a valid organization id on params",
 			})
 
+		const organizationId =
+			typeof request.params.id === "string"
+				? parseInt(request.params.id)
+				: request.params.id
+
 		try {
-			const response = await service(repository)(request.params.id)
+			const response = await service(repository)(organizationId)
 
 			if (!response)
 				return notFound({

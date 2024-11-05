@@ -16,5 +16,5 @@ export type CreateOrganizationRepository = (
 ) => Promise<Organization | null>
 
 export type FindOrganizationByIdRepository = (
-	id: string
+	id: number
 ) => Promise<Organization | null>

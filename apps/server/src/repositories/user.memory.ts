@@ -9,7 +9,7 @@ class UserRepositoryMemory implements UserRepository {
 		this.users = []
 	}
 
-	async fetchId(id: string): Promise<User | null> {
+	async fetchId(id: number): Promise<User | null> {
 		const user = this.users?.find((u) => u.id === id)
 		return user || null
 	}
@@ -19,16 +19,14 @@ class UserRepositoryMemory implements UserRepository {
 		return user || null
 	}
 
-	async fetchOrganizations(userId: string): Promise<Organization[]> {
+	async fetchOrganizations(userId: number): Promise<Organization[]> {
 		return []
 	}
 
 	async create(data: any) {
-		const id = await encrypt(data.name)
-
 		const user = {
 			...data,
-			id,
+			id: this.users.length + 1,
 			createdAt: new Date(),
 		}
 

@@ -3,4 +3,4 @@ import { OrganizationRepository } from "../repositories/organization"
 
 export type FetchOrganizationByIdService = (
 	repository: OrganizationRepository
-) => (id: string) => Promise<Organization | null>
+) => (id: number) => Promise<Organization | null>

@@ -1,6 +1,6 @@
 import { userFetchIdController } from "./user-fetch-id-controller"
 import { userFetchIdService } from "./user-fetch-id.service"
-import { expect, test, describe } from "@jest/globals"
+import { expect, test, describe } from "vitest"
 import { Status } from "../../engine/status"
 import { userCreateService } from "./user-create.service"
 import { userCreateController } from "./user-create.controller"

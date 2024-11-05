@@ -15,6 +15,12 @@ export const userFetchIdController =
 		fetchIdService: FetchUserIdService
 	): Controller<any, FetchIdUserContractOutput, FetchIdUserContractInput> =>
 	async (request) => {
+		if (!request?.params?.id)
+			return badRequest({
+				message: "Missing user id!",
+				detail: "Please provide user id",
+			})
+
 		const validation = validateZodSchema(
 			FETCH_ID_USER_CONTRACT_INPUT,
 			request?.params
@@ -22,8 +28,13 @@ export const userFetchIdController =
 
 		if (validation.type === "error") return badRequest(validation.error)
 
+		const userId =
+			typeof request.params.id === "string"
+				? parseInt(request.params.id)
+				: request.params.id
+
 		try {
-			const user = await fetchIdService(repository)(request?.params?.id!)
+			const user = await fetchIdService(repository)(userId)
 
 			if (!user)
 				return notFound({

@@ -7,7 +7,7 @@ import {
 
 export type FetchUserOrganizationsService = (
 	repository: UserRepository
-) => (user_id: string) => Promise<Organization[] | null>
+) => (user_id: number) => Promise<Organization[] | null>
 
 export type FetchUserEmailService = (
 	repository: UserRepository
@@ -15,7 +15,7 @@ export type FetchUserEmailService = (
 
 export type FetchUserIdService = (
 	repository: UserRepository
-) => (id: string) => Promise<User | null>
+) => (id: number) => Promise<User | null>
 
 export type CreateUserService = (
 	repository: UserRepository

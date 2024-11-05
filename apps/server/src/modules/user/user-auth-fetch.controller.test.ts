@@ -1,4 +1,4 @@
-import { describe, expect, test } from "@jest/globals"
+import { describe, expect, test } from "vitest"
 import { userCreateService } from "./user-create.service"
 import { userCreateAuthCredentialsService } from "./user-auth-create-credentials.service"
 import { userCreateAuthCredentialsController } from "./user-auth-create-credentials.controller"

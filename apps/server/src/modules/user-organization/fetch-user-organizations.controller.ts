@@ -8,7 +8,7 @@ export const fetchUserOrganizationsController =
 	(
 		repository: UserRepository,
 		service: FetchUserOrganizationsService
-	): Controller<unknown, Organization[], { id: string }> =>
+	): Controller<unknown, Organization[], { id: number }> =>
 	async (req) => {
 		if (!req?.params?.id)
 			return badRequest({
@@ -16,8 +16,13 @@ export const fetchUserOrganizationsController =
 				detail: "user id is required",
 			})
 
+		const userId =
+			typeof req.params.id === "string"
+				? parseInt(req.params.id)
+				: req.params.id
+
 		try {
-			const organizations = await service(repository)(req.params.id)
+			const organizations = await service(repository)(userId)
 
 			if (organizations === null)
 				return badRequest({

@@ -36,15 +36,11 @@ export default function DialogCreateOrganization({
 		mode: "onSubmit",
 		defaultValues: {
 			name: "",
-			role: "OWNER",
 		},
 	})
 
 	const submit = async (data: CreateOrganizationInput) => {
-		const response = await mutateAsync({
-			...data,
-			role: "OWNER",
-		})
+		const response = await mutateAsync(data)
 		reset() // reset the form
 		onSuccess(response)
 	}

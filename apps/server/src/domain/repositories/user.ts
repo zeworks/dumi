@@ -8,7 +8,7 @@ export type UserRepository = {
 	create: (
 		user: CreateUserContractInput
 	) => Promise<CreateUserContractOutput | null>
-	fetchId: (id: string) => Promise<User | null>
+	fetchId: (id: number) => Promise<User | null>
 	fetchEmail: (email: string) => Promise<User | null>
-	fetchOrganizations: (userId: string) => Promise<Organization[] | null>
+	fetchOrganizations: (userId: number) => Promise<Organization[] | null>
 }

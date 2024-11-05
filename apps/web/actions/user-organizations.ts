@@ -5,10 +5,11 @@ import { Organization } from "@dumi/zod/schemas"
 import fetch from "@/lib/fetch"
 
 export async function getUserOrganizations(
-	userId?: string
+	userId?: number
 ): Promise<Organization[]> {
 	try {
 		const session = await getServerAuthSession()
+
 		const response = await fetch<Organization[]>(
 			`users/${userId || session?.user.id}/organizations`,
 			{
@@ -21,6 +22,6 @@ export async function getUserOrganizations(
 		return response.type === "success" ? response.data : []
 	} catch (error) {
 		console.log("error on fetch user organizations", error)
-		return []
+		throw error
 	}
 }

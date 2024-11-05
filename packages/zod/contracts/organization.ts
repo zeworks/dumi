@@ -11,15 +11,14 @@ export const CREATE_ORGANIZATION_INPUT = z.object({
 			message: "Name cannot be longer than 10 characters",
 		})
 		.describe("organization name"),
-	ownerId: z.string().optional().describe("owner id"),
+	ownerId: z.number().optional().describe("owner id"),
 	avatar: z.string().optional().describe("organization avatar"),
-	role: memberRole.default("USER"),
 })
 
 export const CREATE_ORGANIZATION_OUTPUT = organization
 
 export const UPDATE_ORGANIZATION_INPUT = z.object({
-	id: z.string(),
+	id: z.number(),
 	organization,
 })
 

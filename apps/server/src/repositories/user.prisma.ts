@@ -2,7 +2,7 @@ import { UserRepository } from "../domain/repositories/user"
 import db from "../engine/database"
 import { CreateUserContractInput } from "@dumi/zod/contracts/user"
 
-export const findUserById = (userId: string) => {
+export const findUserById = (userId: number) => {
 	return db.user.findUnique({
 		where: { id: userId },
 	})
@@ -29,7 +29,7 @@ const create = async (data: CreateUserContractInput) => {
 	return user
 }
 
-export const findUserOrganizationsById = (userId: string): Promise<any> =>
+export const findUserOrganizationsById = (userId: number): Promise<any> =>
 	db.organization.findMany({
 		where: {
 			members: {

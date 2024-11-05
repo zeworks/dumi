@@ -6,7 +6,8 @@ import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { jwtSign, jwtVerify } from "@dumi/crypto"
-import NextAuth from "next-auth/next"
+import NextAuth from "next-auth"
+import * as types from "./types/next-auth"
 
 type ProviderAdapterOutput = User | string | undefined
 
@@ -330,7 +331,7 @@ export const nextAuthOptions: AuthOptions = {
 				sub: userDb?.id,
 				avatar: userDb?.avatar,
 				status: userDb?.status,
-			}
+			} as any
 		},
 
 		async session({ session, token, user }) {
@@ -357,3 +358,4 @@ export const nextAuthOptions: AuthOptions = {
 const handler = NextAuth(nextAuthOptions)
 
 export { handler as GET, handler as POST }
+export type { types }

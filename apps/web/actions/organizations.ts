@@ -17,7 +17,6 @@ export async function createOrganization(
 			body: JSON.stringify({
 				name: data.name,
 				ownerId: session?.user.id,
-				role: data.role,
 			} as CreateOrganizationInput),
 			method: "POST",
 		})

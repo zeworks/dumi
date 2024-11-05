@@ -71,7 +71,7 @@ export const organizationRepository: OrganizationRepository = {
 						id: data.ownerId,
 					},
 				},
-				role: data.role,
+				role: "OWNER",
 			},
 		})
 
