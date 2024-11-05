@@ -198,12 +198,17 @@ export const credentialsCallbackAdapter = async (params: any) => {
 	try {
 		if (user.status !== "ACTIVE") return "/auth/account-inactive"
 
+		const providerAccountId =
+			typeof account.providerAccountId === "number"
+				? String(account.providerAccountId)
+				: account.providerAccountId
+
 		// Check if there is an existing account with the provider and providerAccountId
 		const existingAccount = await client.account.findUnique({
 			where: {
 				provider_providerAccountId: {
 					provider: account.provider,
-					providerAccountId: account.providerAccountId,
+					providerAccountId,
 				},
 			},
 		})
@@ -214,7 +219,7 @@ export const credentialsCallbackAdapter = async (params: any) => {
 				data: {
 					userId: user!.id,
 					provider: account.provider,
-					providerAccountId: account.providerAccountId,
+					providerAccountId,
 					accessToken: account.accessToken,
 					refreshToken: account.refreshToken,
 					accessTokenExpires: account.expires_at

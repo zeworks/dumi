@@ -287,9 +287,6 @@ importers:
       '@dumi/tsconfig':
         specifier: workspace:*
         version: link:../../config/tsconfig
-      zod:
-        specifier: ^3.22.4
-        version: 3.23.8
 
   packages/zod:
     dependencies:
