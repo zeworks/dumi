@@ -5,10 +5,11 @@ import { Organization } from "@dumi/zod/schemas"
 import fetch from "@/lib/fetch"
 
 export async function getUserOrganizations(
-	userId?: string
+	userId?: number
 ): Promise<Organization[]> {
 	try {
 		const session = await getServerAuthSession()
+
 		const response = await fetch<Organization[]>(
 			`users/${userId || session?.user.id}/organizations`,
 			{
