@@ -98,7 +98,7 @@ model Invitation {
 model Account {
   id                 Int       @id @default(autoincrement())
   provider           String
-  providerAccountId  String    @map("provider_account_id")
+  providerAccountId  Int       @map("provider_account_id")
   refreshToken       String?   @map("refresh_token")
   accessToken        String?   @map("access_token")
   accessTokenExpires DateTime? @map("access_token_expires")
